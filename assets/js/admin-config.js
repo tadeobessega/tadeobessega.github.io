@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbzV3tUwpjVWF69slTJhmuKdmsd7INboM746lLesj1mQjFc7c_Mq8OMwuHOLQb1R7pf8/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbz0a0VXQPcGS41kWw0-77v51ddlxdTbN0NDhkToZeyMjJlwsleF8yoKkudhcee7sgXv/exec';
 
 // Lista base de centros (se puede sobreescribir desde Config)
 const CENTROS = [

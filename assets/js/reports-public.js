@@ -2,7 +2,7 @@
 // reports-public.js — carga dinámica de informes desde la API
 // ============================================================
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbzV3tUwpjVWF69slTJhmuKdmsd7INboM746lLesj1mQjFc7c_Mq8OMwuHOLQb1R7pf8/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbz0a0VXQPcGS41kWw0-77v51ddlxdTbN0NDhkToZeyMjJlwsleF8yoKkudhcee7sgXv/exec';
 
 const CENTRO_COLORS = {
   CEER: '#020995',
@@ -133,10 +133,10 @@ async function loadInformesDestacados() {
       <div class="informe-card">
         <div class="informe-meta">
           <span class="informe-date">${formatMonthYear(r.fecha)}</span>
-          <span class="publicacion-type-${(r.centro || '').toLowerCase()}">${esc(r.centro)}</span>
+          <span class="informe-category">${esc(r.tag)}</span>
         </div>
         <h3 class="informe-title">${esc(r.titulo)}</h3>
-        <p class="informe-excerpt">${esc(r.descripcion || r.tag)}</p>
+        ${r.descripcion ? `<p class="informe-excerpt">${esc(r.descripcion)}</p>` : ''}
         <a href="${r.pdf_url}" target="_blank" class="informe-link">Leer más <i class="fas fa-arrow-right"></i></a>
       </div>
     `).join('');

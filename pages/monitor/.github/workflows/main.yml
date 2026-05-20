@@ -1,0 +1,50 @@
+name: Actualizador Diario BCRA
+
+# Cuándo se ejecuta este robot
+on:
+  schedule:
+    # Corre a las 08:00 UTC, que son las 05:00 AM en Argentina
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Esto te deja un botón para correrlo a mano cuando quieras
+
+jobs:
+  actualizar-datos:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Descargar los archivos de tu repo
+      uses: actions/checkout@v3
+
+    - name: 2. Preparar una compu con Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 3. Instalar las herramientas (Pandas, Excel, etc.)
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas requests openpyxl
+
+    - name: 4. Ejecutar tu Súper Cerebro y Diagnosticar
+      env:
+        ARGENSTATS_API_KEY: ${{ secrets.ARGENSTATS_API_KEY }}
+      run: |
+        echo "=== ARCHIVOS ANTES DE CORRER EL SCRIPT ==="
+        ls -la
+        
+        echo "=== EJECUTANDO PYTHON ==="
+        python bot_monetario.py
+        
+        echo "=== ARCHIVOS DESPUÉS DE CORRER EL SCRIPT ==="
+        ls -la
+        
+        echo "=== ESTADO DE GIT ==="
+        git status
+
+    - name: 5. Guardar los nuevos datos en GitHub
+      run: |
+        git config --local user.email "bot-madrugador@ceer.com"
+        git config --local user.name "Robot BCRA"
+        git add .
+        # Solo hace el commit si algún archivo realmente cambió
+        git diff --quiet && git diff --staged --quiet || (git commit -m "📊 Datos actualizados automáticamente" && git push)
