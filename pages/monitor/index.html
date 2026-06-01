@@ -1041,45 +1041,45 @@
 
         function verTab(e, id) { document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); window.allCharts.forEach(c => c.update()); }
 
-        function filtrarTexto() {
-            let s = document.getElementById('dateStart').value, e = document.getElementById('dateEnd').value;
-            let st_m = window.fechas_m[0], en_m = window.fechas_m[window.fechas_m.length - 1];
-            let st_d = window.fechas_d[0], en_d = window.fechas_d[window.fechas_d.length - 1];
-            if (s) { let s_m = s.substring(0, 7); st_m = window.fechas_m.find(f => f >= s_m) || st_m; st_d = window.fechas_d.find(f => f >= s) || st_d; }
-            if (e) { let e_m = e.substring(0, 7); en_m = [...window.fechas_m].reverse().find(f => f <= e_m) || en_m; en_d = [...window.fechas_d].reverse().find(f => f <= e) || en_d; }
-
-            window.allCharts.forEach(c => {
-                try {
-                    if (c.options.scales.x && c.config.type !== 'scatter') {
-                        c.options.scales.x.min = (c.canvas.id === 'chartDiario') ? st_d : st_m;
-                        c.options.scales.x.max = (c.canvas.id === 'chartDiario') ? en_d : en_m;
-
-                        if (c.canvas.id === 'chartIPC' || c.canvas.id === 'chartTasas') {
-                            if (!s) c.options.scales.x.min = '2000-01';
-                        } else {
-                            if (c.data.labels && c.data.labels.length > 0) {
-                                let primerIndiceReal = c.data.labels.length;
-                                if (c.data.datasets) {
-                                    c.data.datasets.forEach(ds => {
-                                        if (ds.data && Array.isArray(ds.data)) {
-                                            let idx = ds.data.findIndex(val => val !== null && val !== undefined && !Number.isNaN(val));
-                                            if (idx !== -1 && idx < primerIndiceReal) primerIndiceReal = idx;
-                                        }
-                                    });
+function filtrarTexto(){
+        let s=document.getElementById('dateStart').value, e=document.getElementById('dateEnd').value;
+        let st_m=window.fechas_m[0], en_m=window.fechas_m[window.fechas_m.length-1];
+        let st_d=window.fechas_d[0], en_d=window.fechas_d[window.fechas_d.length-1];
+        if(s){ let s_m=s.substring(0,7); st_m=window.fechas_m.find(f=>f>=s_m)||st_m; st_d=window.fechas_d.find(f=>f>=s)||st_d; }
+        if(e){ let e_m=e.substring(0,7); en_m=[...window.fechas_m].reverse().find(f=>f<=e_m)||en_m; en_d=[...window.fechas_d].reverse().find(f=>f<=e)||en_d; }
+        
+        window.allCharts.forEach(c=>{
+            try {
+                if(c.options.scales.x && c.config.type !== 'scatter'){
+                    c.options.scales.x.min = (c.canvas.id==='chartDiario')?st_d:st_m;
+                    c.options.scales.x.max = (c.canvas.id==='chartDiario')?en_d:en_m;
+                    
+                    // BUSCAR DONDE TODAS LAS LÍNEAS TENGAN DATOS AL MISMO TIEMPO (Intersección)
+                    if (c.data.labels && c.data.labels.length > 0) {
+                        let indicesInicio = [];
+                        if (c.data.datasets) {
+                            c.data.datasets.forEach(ds => {
+                                if (ds.data && Array.isArray(ds.data)) {
+                                    let idx = ds.data.findIndex(val => val !== null && val !== undefined && !Number.isNaN(val));
+                                    if(idx !== -1) indicesInicio.push(idx);
                                 }
-                                if (primerIndiceReal < c.data.labels.length && !s) {
-                                    c.options.scales.x.min = c.data.labels[primerIndiceReal];
-                                }
-                            }
+                            });
                         }
-                        c.update();
+                        
+                        // Aplicar recorte automático si el usuario no fijó fecha manual "Desde"
+                        if (indicesInicio.length > 0 && !s) {
+                            // Math.max toma el inicio más "tardío" entre todas las variables del gráfico
+                            let inicioComun = Math.max(...indicesInicio);
+                            c.options.scales.x.min = c.data.labels[inicioComun];
+                        }
                     }
-                } catch (err) {
-                    console.error("Error ajustando fechas:", err);
+                    c.update();
                 }
-            });
-        }
-
+            } catch (err) {
+                console.error("Error ajustando fechas:", err);
+            }
+        });
+    }
         function initGen() {
             [1, 2].forEach(i => {
                 const sel = document.getElementById(`genSelect${i}`);
@@ -1365,7 +1365,7 @@
                 buildC('chartFED', [{ label: 'Tasa FED (EFFR %)', data: m('tasa_fed'), borderColor: C_PRINCIPAL, fill: false, borderWidth: 2.5 }], {}, false, false, 'Fuente: CEER en base a NY Fed');
 
                 buildC('chartAgregados', [{ label: 'M2', data: m('m2'), borderColor: C_MORADO, fill: false, borderWidth: 2.5 }, { label: 'Base Monetaria', data: m('base_monetaria'), borderColor: C_PRINCIPAL, fill: false, borderWidth: 2.5 }]);
-                buildC('chartTasas', [{ label: 'Tasa Política', data: m('tasa_politica_tea'), borderColor: C_PRINCIPAL, fill: false, borderWidth: 2.5, yAxisID: 'y' }, { label: 'BADLAR', data: m('badlar_tea'), borderColor: C_INFORMES, fill: false, borderWidth: 2.5, yAxisID: 'y' }, { label: 'IPC Mensual', data: m('ipc_mensual'), backgroundColor: 'rgba(68,4,197,0.7)', type: 'bar', yAxisID: 'y1', borderRadius: 4 }], { y1: { type: 'linear', position: 'right', grid: { display: false }, border: { display: false }, ticks: { maxTicksLimit: 5, font: { family: "'Inter', sans-serif", weight: '400' } } } });
+                buildC('chartTasas', [{label:'Tasa Política',data:m('tasa_politica_tea'),borderColor:C_PRINCIPAL,fill:false,borderWidth:2.5,yAxisID:'y'},{label:'BADLAR',data:m('badlar_tea'),borderColor:C_INFORMES,fill:false,borderWidth:2.5,yAxisID:'y'},{label:'IPC Interanual',data:m('ipc_interanual'),backgroundColor:'rgba(68,4,197,0.7)',type:'bar',yAxisID:'y',borderRadius:4}], {});
                 buildC('chartDiario', [{ label: 'BADLAR', data: d('badlar_tea'), borderColor: C_PRINCIPAL, fill: false, borderWidth: 2 }, { label: 'TAMAR', data: d('tamar_tea'), borderColor: C_MORADO, fill: false, borderWidth: 2 }]);
 
                 initGen();
