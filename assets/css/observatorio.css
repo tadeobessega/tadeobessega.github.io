@@ -204,11 +204,11 @@
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: .5ch;
   color: var(--cer-cyan);
-  transition: gap var(--transition-fast);
+  transition: opacity var(--transition-fast);
 }
-[class^="publicacion-link"]:hover { gap: var(--spacing-md); }
+[class^="publicacion-link"]:hover { opacity: .8; }
 .publicacion-link-ceer   { color: #6f6fff; }
 .publicacion-link-ceeir  { color: #6cc2f5; }
 .publicacion-link-cedhys { color: #7ba0f2; }
@@ -278,7 +278,14 @@
 }
 @media (min-width: 1024px) {
   .ejes-grid { grid-template-columns: repeat(3, 1fr); }
-  .ejes-grid.ejes-grid--par { grid-template-columns: repeat(2, 1fr); }
+  /* Centros con 2 o 4 ejes: 2 columnas parejas y centradas (no estiradas a lo ancho) */
+  .ejes-grid.ejes-grid--par {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #indicadores-container.ejes-grid { max-width: none; }
   .publicaciones-grid { grid-template-columns: repeat(3, 1fr); }
   .equipo-grid { grid-template-columns: repeat(3, 1fr); }
 }

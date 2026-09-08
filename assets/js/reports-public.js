@@ -57,7 +57,7 @@ async function loadCentroPublicaciones(centroId, centroSlug) {
         </div>
         <h3 class="publicacion-title">${esc(r.titulo)}</h3>
         ${r.descripcion ? `<p class="publicacion-excerpt">${esc(r.descripcion)}</p>` : ''}
-        ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="publicacion-link-${centroSlug}">Leer más <i class="fas fa-arrow-right"></i></a>` : ''}
+        ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="publicacion-link-${centroSlug}"><i class="fas fa-file-arrow-down"></i> Descargar PDF</a>` : ''}
       </article>
     `).join('');
   } catch (e) {
@@ -75,24 +75,22 @@ async function loadUltimasPublicaciones() {
   try {
     const reports = (await CERData.getReports('all')).slice(0, 6);
     if (!reports.length) { grid.innerHTML = emptyState('Todavía no hay publicaciones.'); return; }
-    const color = r => CENTRO_COLORS[r.centro] || '#3a3aff';
 
     grid.innerHTML = reports.map(r => `
-      <article class="novedad-card">
-        <a href="${r.pdf_url ? encodeURI(r.pdf_url) : '#'}" ${r.pdf_url ? 'target="_blank" rel="noopener"' : ''}>
-          <div class="novedad-image" style="background:linear-gradient(135deg,${color(r)},#05051a);display:flex;align-items:center;justify-content:center;">
-            <span style="color:rgba(255,255,255,.22);font-size:2rem;font-weight:800;letter-spacing:.06em;">${esc(r.centro)}</span>
+      <article class="novedad-card novedad-card--plain">
+        <div class="novedad-content">
+          <div class="novedad-meta">
+            <span class="novedad-date">${formatMonthYear(r.fecha)}</span>
+            <span class="publicacion-type-${(r.centro || '').toLowerCase()}">${esc(r.centro)}</span>
           </div>
-          <div class="novedad-content">
-            <div class="novedad-date">${formatMonthYear(r.fecha)}</div>
-            <h3 class="novedad-title">${esc(r.titulo)}</h3>
-            <p class="novedad-excerpt">${esc(
-              r.descripcion
-                ? (r.descripcion.length > 120 ? r.descripcion.slice(0, 120) + '…' : r.descripcion)
-                : r.tag
-            )}</p>
-          </div>
-        </a>
+          <h3 class="novedad-title">${esc(r.titulo)}</h3>
+          <p class="novedad-excerpt">${esc(
+            r.descripcion
+              ? (r.descripcion.length > 140 ? r.descripcion.slice(0, 140) + '…' : r.descripcion)
+              : r.tag
+          )}</p>
+          ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="informe-link"><i class="fas fa-file-arrow-down"></i> Descargar PDF</a>` : ''}
+        </div>
       </article>
     `).join('');
   } catch (e) {
@@ -121,7 +119,7 @@ async function loadInformesDestacados() {
         </div>
         <h3 class="informe-title">${esc(r.titulo)}</h3>
         <p class="informe-excerpt">${esc(r.descripcion || r.tag)}</p>
-        ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="informe-link">Leer más <i class="fas fa-arrow-right"></i></a>` : ''}
+        ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="informe-link"><i class="fas fa-file-arrow-down"></i> Descargar PDF</a>` : ''}
       </article>
     `).join('');
   } catch (e) {

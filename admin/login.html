@@ -54,7 +54,9 @@
                     <div id="registerMessage" class="alert" style="display:none;"></div>
                     <div class="form-group">
                         <label class="form-label" for="registerEmail">Usuario</label>
-                        <input type="text" id="registerEmail" class="form-input" placeholder="nombre.apellido" required>
+                        <input type="text" id="registerEmail" class="form-input" placeholder="tu usuario" required
+                            pattern="[^@\s]+" title="Un nombre de usuario, sin @ ni espacios">
+                        <p style="font-size:.78rem;color:var(--muted);margin-top:.35rem;">Elegí un nombre de usuario (no un email).</p>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="registerPassword">Contraseña</label>

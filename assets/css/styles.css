@@ -172,9 +172,9 @@ body {
   gap: .6rem;
 }
 .logo-img {
-  height: 38px;
-  width: 38px;
-  border-radius: 9px;
+  height: 46px;
+  width: 46px;
+  border-radius: 11px;
   object-fit: cover;
   box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 6px 18px -6px rgba(75,75,255,.7);
 }
@@ -222,7 +222,35 @@ body {
 .nav-link.active { color: #fff; }
 .nav-link:hover::after,
 .nav-link.active::after { width: 100%; }
-.nav-link-ciclica { color: var(--cer-cyan); }
+
+/* Cíclica: pastilla celeste al final del menú, con hover tipo pestaña de Chrome */
+.nav-list { align-items: center; }
+.nav-list li:last-child { margin-left: .5rem; }   /* Cíclica separada, a la derecha de todo */
+.nav-link-ciclica {
+  color: #06283d;
+  background: #9bd4ec;
+  padding: .34rem .95rem;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.nav-link-ciclica::after { display: none !important; }
+.nav-link-ciclica:hover,
+.nav-link-ciclica.active {
+  color: #06283d;
+  background: #c9ecfa;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px -4px rgba(155, 212, 236, .6);
+}
+/* En el menú móvil, Cíclica también resaltada */
+.nav-mobile li:last-child .nav-mobile-link {
+  color: #06283d;
+  background: #9bd4ec;
+  border-radius: 10px;
+  margin-top: .4rem;
+  font-weight: 600;
+}
+.nav-mobile li:last-child .nav-mobile-link:hover { background: #c9ecfa; padding-left: var(--spacing-xs); }
 
 .mobile-menu-btn {
   display: flex;
@@ -545,14 +573,14 @@ section:not(.hero-slider) {
   border-color: rgba(75,75,255,.45);
   box-shadow: var(--shadow-md);
 }
-.novedad-card a { display: block; color: inherit; }
-.novedad-image { width: 100%; height: 170px; overflow: hidden; }
-.novedad-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
-.novedad-card:hover .novedad-image img { transform: scale(1.05); }
+.novedad-card a { color: inherit; }
 .novedad-content { padding: var(--spacing-lg); }
-.novedad-date { color: var(--cer-cyan); font-size: var(--font-size-sm); font-weight: 600; margin-bottom: var(--spacing-xs); }
-.novedad-title { font-size: var(--font-size-lg); font-weight: 700; color: #fff; margin-bottom: var(--spacing-sm); line-height: 1.4; }
-.novedad-excerpt { color: var(--gray-500); line-height: 1.6; font-size: var(--font-size-sm); }
+.novedad-card--plain .novedad-content { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.novedad-meta { display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap; }
+.novedad-date { color: var(--cer-cyan); font-size: var(--font-size-sm); font-weight: 600; }
+.novedad-title { font-size: var(--font-size-lg); font-weight: 700; color: #fff; line-height: 1.4; margin: 0; }
+.novedad-excerpt { color: var(--gray-500); line-height: 1.6; font-size: var(--font-size-sm); margin: 0; }
+.novedad-card--plain .informe-link { margin-top: auto; }
 
 .informe-card {
   background: var(--cer-surface);
@@ -578,15 +606,17 @@ section:not(.hero-slider) {
 }
 .informe-title { font-size: var(--font-size-xl); font-weight: 700; color: #fff; margin-bottom: var(--spacing-sm); line-height: 1.4; }
 .informe-excerpt { color: var(--gray-500); margin-bottom: var(--spacing-md); line-height: 1.7; }
-.informe-link {
+.informe-link,
+[class^="publicacion-link"] {
   color: var(--cer-cyan);
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  transition: gap var(--transition-fast);
+  gap: .5ch;
+  transition: opacity var(--transition-fast);
 }
-.informe-link:hover { gap: var(--spacing-md); }
+.informe-link:hover,
+[class^="publicacion-link"]:hover { opacity: .8; }
 
 /* ============================================================
    QUIÉNES SOMOS

@@ -17,6 +17,7 @@
         /* ---- Cíclica ---- */
         .ciclica-hero {
             position: relative;
+            isolation: isolate;          /* el degradado queda SIEMPRE de fondo */
             overflow: hidden;
             text-align: center;
             color: #fff;
@@ -27,15 +28,16 @@
         .ciclica-hero::before {
             content: "";
             position: absolute;
-            width: 760px; height: 760px;
-            top: -300px; left: 50%;
-            transform: translateX(-50%);
+            z-index: 0;                  /* detrás del contenido */
+            width: min(620px, 90%); height: 360px;
+            top: 30%; left: 50%;
+            transform: translate(-50%, -50%);
             border-radius: 50%;
-            background: radial-gradient(circle, var(--cer-cyan), transparent 66%);
-            opacity: .28;
-            filter: blur(70px);
+            background: radial-gradient(ellipse at center, rgba(34, 211, 238, .22), transparent 72%);
+            filter: blur(90px);
             pointer-events: none;
         }
+        .ciclica-hero .container,
         .ciclica-hero .hero-content { position: relative; z-index: 1; }
 
         .ciclica-badge {
@@ -98,6 +100,14 @@
             transition: transform .2s, box-shadow .2s, border-color .2s;
         }
         .note-card:hover { transform: translateY(-4px); border-color: rgba(34, 211, 238, .55); box-shadow: 0 16px 40px -18px rgba(34, 211, 238, .4); }
+        .note-card--foto { padding: 0; overflow: hidden; }
+        .note-card--foto .note-meta,
+        .note-card--foto .note-title,
+        .note-card--foto .note-excerpt,
+        .note-card--foto .note-link { margin-left: 1.5rem; margin-right: 1.5rem; }
+        .note-card--foto .note-meta { margin-top: 1.25rem; }
+        .note-card--foto .note-link { display: inline-block; margin-bottom: 1.5rem; }
+        .note-foto { width: 100%; height: 180px; object-fit: cover; display: block; }
         .note-meta { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-bottom: .75rem; }
         .note-tag { background: var(--cer-cyan); color: #04121a; padding: 2px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
         .note-date { font-size: .8rem; color: var(--gray-500); }
@@ -191,13 +201,14 @@
                 </div>
                 <nav class="nav-desktop" aria-label="Principal">
                     <ul class="nav-list">
+                        
                         <li><a href="../index.html#inicio" class="nav-link">Inicio</a></li>
-                        <li><a href="ciclica.html" class="nav-link nav-link-ciclica active">Cíclica</a></li>
                         <li><a href="../index.html#observatorios" class="nav-link">Observatorios</a></li>
                         <li><a href="../index.html#novedades" class="nav-link">Novedades</a></li>
                         <li><a href="../index.html#informes" class="nav-link">Informes</a></li>
                         <li><a href="../index.html#quienes-somos" class="nav-link">¿Quiénes somos?</a></li>
                         <li><a href="../index.html#contacto" class="nav-link">Contacto</a></li>
+                        <li><a href="ciclica.html" class="nav-link nav-link-ciclica active">Cíclica</a></li>
                     </ul>
                 </nav>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú" aria-controls="mobileNav" aria-expanded="false">
@@ -206,13 +217,14 @@
             </div>
             <nav class="nav-mobile" id="mobileNav" aria-label="Menú móvil">
                 <ul>
+                    
                     <li><a href="../index.html#inicio" class="nav-mobile-link">Inicio</a></li>
-                    <li><a href="ciclica.html" class="nav-mobile-link">Cíclica</a></li>
                     <li><a href="../index.html#observatorios" class="nav-mobile-link">Observatorios</a></li>
                     <li><a href="../index.html#novedades" class="nav-mobile-link">Novedades</a></li>
                     <li><a href="../index.html#informes" class="nav-mobile-link">Informes</a></li>
                     <li><a href="../index.html#quienes-somos" class="nav-mobile-link">¿Quiénes somos?</a></li>
                     <li><a href="../index.html#contacto" class="nav-mobile-link">Contacto</a></li>
+                    <li><a href="ciclica.html" class="nav-mobile-link">Cíclica</a></li>
                 </ul>
             </nav>
         </div>
@@ -226,7 +238,7 @@
                     <h1>Cíclica</h1>
                     <h2>Un espacio de análisis, reflexión y debate político para la Argentina que viene</h2>
                     <button class="ciclica-submit-btn" onclick="openSubmitModal()">
-                        <i class="fas fa-paper-plane"></i> Enviar una nota
+                        <i class="fas fa-paper-plane"></i> Enviar tu nota
                     </button>
                 </div>
             </div>
@@ -251,7 +263,7 @@
     <div class="ciclica-modal-overlay" id="submitModal">
         <div class="ciclica-modal">
             <button class="ciclica-modal-close" onclick="closeSubmitModal()" aria-label="Cerrar">&times;</button>
-            <h3><i class="fas fa-pen-nib" style="margin-right:.5em;"></i>Enviar nota de opinión</h3>
+            <h3><i class="fas fa-pen-nib" style="margin-right:.5em;"></i>Enviá tu nota de opinión</h3>
             <p style="font-size:.875rem;margin-bottom:1.5rem;">
                 Tu nota será revisada por el equipo editorial antes de publicarse. El proceso puede demorar algunos días.
             </p>
@@ -271,12 +283,11 @@
             <label for="notaEmail">Tu email <span style="font-weight:400;color:var(--gray-500);">(opcional, para contactarte)</span></label>
             <input type="email" id="notaEmail" placeholder="tu@email.com">
 
-            <p style="font-size:.8rem;color:var(--gray-500);margin:-.25rem 0 1rem;">
-                <i class="fas fa-circle-info"></i> Si tenés la nota en PDF, el equipo editorial te lo pedirá por mail una vez aprobada.
-            </p>
+            <label for="notaFoto">Foto <span style="font-weight:400;color:var(--gray-500);">(opcional — pegá el link de una imagen)</span></label>
+            <input type="url" id="notaFoto" placeholder="https://…/foto.jpg">
 
-            <button class="ciclica-submit-btn" style="width:100%;justify-content:center;" onclick="submitNota()" id="submitNoteBtn">
-                <span id="submitNoteBtnText"><i class="fas fa-paper-plane"></i> Enviar nota</span>
+            <button class="ciclica-submit-btn" style="width:100%;justify-content:center;margin-top:.25rem;" onclick="submitNota()" id="submitNoteBtn">
+                <span id="submitNoteBtnText"><i class="fas fa-paper-plane"></i> Enviar tu nota</span>
                 <span id="submitNoteSpinner" style="display:none;width:18px;height:18px;border:2px solid rgba(0,0,0,.25);border-top-color:#04121a;border-radius:50%;animation:cer-spin .8s linear infinite;"></span>
             </button>
         </div>
@@ -363,7 +374,8 @@
                 }
 
                 grid.innerHTML = notes.map(n => `
-                    <article class="note-card">
+                    <article class="note-card${n.foto_url ? ' note-card--foto' : ''}">
+                        ${n.foto_url ? `<img class="note-foto" src="${encodeURI(n.foto_url)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
                         <div class="note-meta">
                             <span class="note-tag">Nota de Opinión</span>
                             <span class="note-date">${formatMY(n.fecha)}</span>
@@ -400,9 +412,11 @@
             const descripcion = document.getElementById('notaDescripcion').value.trim();
             const fecha = document.getElementById('notaFecha').value;
             const email = document.getElementById('notaEmail').value.trim();
+            const foto = document.getElementById('notaFoto').value.trim();
 
             if (!titulo || !descripcion || !fecha) { showSubmitMsg('Completá título, descripción y fecha', 'error'); return; }
             if (descripcion.length > 500) { showSubmitMsg('La descripción supera los 500 caracteres', 'error'); return; }
+            if (foto && !/^https?:\/\//i.test(foto)) { showSubmitMsg('El link de la foto debe empezar con http', 'error'); return; }
 
             const btn = document.getElementById('submitNoteBtn');
             const txt = document.getElementById('submitNoteBtnText');
@@ -413,7 +427,7 @@
             try {
                 const qs = new URLSearchParams({
                     action: 'createNote',
-                    data: JSON.stringify({ titulo, descripcion, fecha, email_autor: email })
+                    data: JSON.stringify({ titulo, descripcion, fecha, email_autor: email, foto_url: foto })
                 });
                 const res = await fetch(`${window.CER_API}?${qs.toString()}`, { method: 'POST' });
                 const data = await res.json();
@@ -423,6 +437,7 @@
                 document.getElementById('notaTitulo').value = '';
                 document.getElementById('notaDescripcion').value = '';
                 document.getElementById('notaEmail').value = '';
+                document.getElementById('notaFoto').value = '';
                 document.getElementById('descCounter').textContent = '0 / 500';
                 setTimeout(closeSubmitModal, 3000);
             } catch (err) {
