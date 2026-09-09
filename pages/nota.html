@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es" data-page="nota">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota de opinión — Cíclica</title>
+    <meta name="description" content="Nota de opinión publicada en Cíclica, la revista de Centros de Estudios Renovación.">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nota de opinión — Cíclica">
+    <meta property="og:description" content="Nota de opinión publicada en Cíclica, la revista de Centros de Estudios Renovación.">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260909">
+    <style>
+        /* ---- Cíclica · lectura clara con celestes ---- */
+        :root {
+            --cic-ink:      #12303f;   /* texto principal */
+            --cic-ink-soft: #4a6472;   /* texto secundario */
+            --cic-bg:       #f2f9fd;   /* fondo página */
+            --cic-surface:  #ffffff;   /* columna de lectura */
+            --cic-celeste:  #2a9ccb;   /* acento */
+            --cic-celeste-d:#1c7ba3;   /* acento oscuro (hover) */
+            --cic-celeste-l:#e4f3fb;   /* celeste muy claro (fondos) */
+            --cic-line:     #d3e7f1;
+        }
+
+        body { background: var(--cic-bg); }
+
+        .nota-page { padding: calc(80px + 2.5rem) 0 5rem; }
+        .nota-wrap { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; }
+
+        .nota-back {
+            display: inline-flex; align-items: center; gap: .5rem;
+            color: var(--cic-celeste-d); font-size: .9rem; font-weight: 600;
+            margin-bottom: 1.75rem;
+        }
+        .nota-back:hover { text-decoration: underline; }
+
+        .nota-kicker {
+            display: inline-block; background: var(--cic-celeste-l); color: var(--cic-celeste-d);
+            font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+            padding: .35rem 1rem; border-radius: 999px; margin-bottom: 1.1rem;
+        }
+        .nota-h1 {
+            font-family: "Source Serif 4", Georgia, serif;
+            font-size: clamp(1.9rem, 4.6vw, 2.9rem);
+            font-weight: 600; line-height: 1.18; color: var(--cic-ink);
+            margin-bottom: 1rem; letter-spacing: -.01em;
+        }
+        .nota-byline {
+            display: flex; flex-wrap: wrap; gap: .35rem .9rem; align-items: center;
+            color: var(--cic-ink-soft); font-size: .9rem; margin-bottom: 2rem;
+        }
+        .nota-byline .dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .5; }
+
+        .nota-foto {
+            width: 100%; max-height: 420px; object-fit: cover;
+            border-radius: 1rem; margin-bottom: 2.25rem; border: 1px solid var(--cic-line);
+        }
+
+        .nota-lead {
+            font-family: "Source Serif 4", Georgia, serif;
+            font-size: 1.2rem; line-height: 1.75; color: var(--cic-ink);
+            padding-left: 1.1rem; border-left: 3px solid var(--cic-celeste);
+            margin-bottom: 2.25rem;
+        }
+
+        .nota-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2.5rem; }
+        .nota-btn {
+            display: inline-flex; align-items: center; gap: .55rem;
+            padding: .8rem 1.6rem; border-radius: .55rem;
+            font-size: .95rem; font-weight: 700; cursor: pointer;
+            transition: transform .18s, box-shadow .18s, background .18s;
+        }
+        .nota-btn--primary { background: var(--cic-celeste); color: #fff; }
+        .nota-btn--primary:hover { transform: translateY(-2px); background: var(--cic-celeste-d); box-shadow: 0 12px 28px -12px rgba(42,156,203,.7); }
+        .nota-btn--ghost { background: #fff; color: var(--cic-celeste-d); border: 1px solid var(--cic-line); }
+        .nota-btn--ghost:hover { background: var(--cic-celeste-l); }
+
+        .nota-viewer {
+            width: 100%; aspect-ratio: 8 / 11;
+            border-radius: 1rem; overflow: hidden;
+            border: 1px solid var(--cic-line); background: #fff;
+        }
+        .nota-viewer iframe { width: 100%; height: 100%; border: 0; }
+        .nota-hint { margin-top: .9rem; font-size: .85rem; color: var(--cic-ink-soft); }
+
+        .nota-state { text-align: center; padding: 4rem 1rem; color: var(--cic-ink-soft); }
+        .nota-state .spin {
+            width: 38px; height: 38px; margin: 0 auto 1.2rem;
+            border: 3px solid var(--cic-line); border-top-color: var(--cic-celeste);
+            border-radius: 50%; animation: cic-spin .8s linear infinite;
+        }
+        @keyframes cic-spin { to { transform: rotate(360deg); } }
+
+        .toast {
+            position: fixed; left: 50%; bottom: 2rem; transform: translateX(-50%) translateY(20px);
+            background: var(--cic-celeste-d); color: #fff; font-weight: 700; font-size: .9rem;
+            padding: .7rem 1.3rem; border-radius: .55rem; opacity: 0; pointer-events: none;
+            transition: opacity .2s, transform .2s; z-index: 9999;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html#inicio" aria-label="Centros de Estudios Renovación — inicio"><img src="../assets/img/logos.png" alt="Centros de Estudios Renovación" class="logo-img"></a>
+                </div>
+                <nav class="nav-desktop" aria-label="Principal">
+                    <ul class="nav-list">
+                        <li><a href="../index.html#inicio" class="nav-link">Inicio</a></li>
+                        <li><a href="../index.html#observatorios" class="nav-link">Observatorios</a></li>
+                        <li><a href="../index.html#novedades" class="nav-link">Novedades</a></li>
+                        <li><a href="../index.html#informes" class="nav-link">Informes</a></li>
+                        <li><a href="../index.html#quienes-somos" class="nav-link">¿Quiénes somos?</a></li>
+                        <li><a href="../index.html#contacto" class="nav-link">Contacto</a></li>
+                        <li><a href="ciclica.html" class="nav-link nav-link-ciclica active">Cíclica</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú" aria-controls="mobileNav" aria-expanded="false">
+                    <span class="hamburger"></span><span class="hamburger"></span><span class="hamburger"></span>
+                </button>
+            </div>
+            <nav class="nav-mobile" id="mobileNav" aria-label="Menú móvil">
+                <ul>
+                    <li><a href="../index.html#inicio" class="nav-mobile-link">Inicio</a></li>
+                    <li><a href="../index.html#observatorios" class="nav-mobile-link">Observatorios</a></li>
+                    <li><a href="../index.html#novedades" class="nav-mobile-link">Novedades</a></li>
+                    <li><a href="../index.html#informes" class="nav-mobile-link">Informes</a></li>
+                    <li><a href="../index.html#quienes-somos" class="nav-mobile-link">¿Quiénes somos?</a></li>
+                    <li><a href="../index.html#contacto" class="nav-mobile-link">Contacto</a></li>
+                    <li><a href="ciclica.html" class="nav-mobile-link">Cíclica</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="nota-page">
+            <div class="nota-wrap" id="notaContent">
+                <div class="nota-state">
+                    <div class="spin"></div>
+                    <p>Cargando nota…</p>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo"><img src="../assets/img/logos.png" alt="Centros de Estudios Renovación" class="footer-logo-img"></div>
+                    <p class="footer-description">Red de centros y observatorios de investigación y análisis.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Enlaces</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html#inicio">Inicio</a></li>
+                        <li><a href="ciclica.html">Cíclica</a></li>
+                        <li><a href="../index.html#observatorios">Observatorios</a></li>
+                        <li><a href="../index.html#novedades">Novedades</a></li>
+                        <li><a href="../index.html#informes">Informes</a></li>
+                        <li><a href="../index.html#quienes-somos">¿Quiénes somos?</a></li>
+                        <li><a href="../index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Observatorios</h4>
+                    <ul class="footer-links">
+                        <li><a href="ceeir.html">CEEIR</a></li>
+                        <li><a href="ceer.html">CEER</a></li>
+                        <li><a href="cedhys.html">CEDHyS</a></li>
+                        <li><a href="opsa.html">OPSA</a></li>
+                        <li><a href="opal.html">OPAL</a></li>
+                        <li><a href="oper.html">OPER</a></li>
+                        <li><a href="ciren.html">CIREN</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Seguinos</h4>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/estudiosrenovacion/?hl=es" class="social-link" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Centros de Estudios Renovación. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">Enlace copiado</div>
+
+    <script src="../assets/js/main.js?v=20260909"></script>
+    <script src="../assets/js/data-source.js?v=20260909"></script>
+    <script>
+        function esc(t) {
+            if (t == null) return '';
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+        function formatDate(s) {
+            if (!s) return '';
+            const d = new Date(s);
+            return isNaN(d) ? s : d.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        function docPreview(url) {
+            if (!url) return '';
+            const m = String(url).match(/document\/d\/([-\w]{20,})/);
+            return m ? `https://docs.google.com/document/d/${m[1]}/preview` : '';
+        }
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 1800);
+        }
+        async function copyLink() {
+            try {
+                await navigator.clipboard.writeText(location.href);
+                toast('Enlace copiado');
+            } catch (e) {
+                prompt('Copiá el enlace de esta nota:', location.href);
+            }
+        }
+
+        function renderError(msg) {
+            document.getElementById('notaContent').innerHTML = `
+                <a href="ciclica.html" class="nota-back"><i class="fas fa-arrow-left"></i> Volver a Cíclica</a>
+                <div class="nota-state">
+                    <i class="fas fa-newspaper" style="font-size:2.5rem;opacity:.25;display:block;margin-bottom:1rem;"></i>
+                    <p>${esc(msg)}</p>
+                </div>`;
+        }
+
+        async function init() {
+            const id = new URLSearchParams(location.search).get('id');
+            if (!id) { renderError('No se indicó qué nota mostrar.'); return; }
+
+            let n;
+            try {
+                n = await CERData.getNoteById(id);
+            } catch (e) {
+                renderError('No se pudo cargar la nota. Probá de nuevo en un momento.');
+                return;
+            }
+            if (!n) { renderError('No encontramos esta nota, o todavía no fue publicada.'); return; }
+
+            const author = (n.email_autor && n.email_autor.indexOf('@') > -1)
+                ? n.email_autor.split('@')[0]
+                : (n.email_autor || '');
+            const preview = docPreview(n.pdf_url);
+
+            document.title = `${n.titulo} — Cíclica`;
+            const md = document.querySelector('meta[name="description"]');
+            if (md && n.descripcion) md.setAttribute('content', n.descripcion.slice(0, 180));
+
+            document.getElementById('notaContent').innerHTML = `
+                <a href="ciclica.html" class="nota-back"><i class="fas fa-arrow-left"></i> Cíclica</a>
+                <span class="nota-kicker">Nota de opinión</span>
+                <h1 class="nota-h1">${esc(n.titulo)}</h1>
+                <div class="nota-byline">
+                    ${author ? `<span>Por ${esc(author)}</span><span class="dot"></span>` : ''}
+                    <span>${formatDate(n.fecha)}</span>
+                </div>
+                ${n.foto_url ? `<img class="nota-foto" src="${encodeURI(n.foto_url)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
+                ${n.descripcion ? `<p class="nota-lead">${esc(n.descripcion)}</p>` : ''}
+                <div class="nota-actions">
+                    ${n.pdf_url ? `<a href="${encodeURI(n.pdf_url)}" target="_blank" rel="noopener" class="nota-btn nota-btn--primary"><i class="fas fa-book-open"></i> Leer la nota completa</a>` : ''}
+                    <button class="nota-btn nota-btn--ghost" onclick="copyLink()"><i class="fas fa-link"></i> Compartir</button>
+                </div>
+                ${preview ? `
+                    <div class="nota-viewer">
+                        <iframe src="${preview}" loading="lazy" title="Vista previa de la nota"></iframe>
+                    </div>
+                    <p class="nota-hint">Si la vista previa no carga, usá el botón “Leer la nota completa”.</p>
+                ` : (n.pdf_url ? '' : `<p class="nota-hint">El texto completo se publica próximamente.</p>`)}
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

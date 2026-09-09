@@ -1,5 +1,5 @@
 /* ============================================================
-   CER — comportamiento compartido del sitio
+   Centros de Estudios Renovación — comportamiento compartido del sitio
    (menú móvil, scroll suave, header, slider del inicio)
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {

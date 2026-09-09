@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CER · Panel de administración</title>
+  <title>Panel de administración — Centros de Estudios Renovación</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/admin.css">
+  <link rel="stylesheet" href="../assets/css/admin.css?v=20260909">
 </head>
 <body class="admin-page">
 
   <!-- HEADER -->
   <header class="admin-header">
     <div class="admin-header-left">
-      <a href="../index.html#inicio" class="admin-header-logo" aria-label="CER — inicio">
-        <img src="../assets/img/ceer-logo.png" alt="CER">
+      <a href="../index.html#inicio" class="admin-header-logo" aria-label="Centros de Estudios Renovación — inicio">
+        <img src="../assets/img/logos.png" alt="Centros de Estudios Renovación">
       </a>
       <nav class="admin-nav">
         <button class="admin-nav-link active" data-view="informes"><i class="fas fa-file-alt"></i> Informes</button>
@@ -389,8 +389,8 @@
     </div>
   </div>
 
-  <script src="../assets/js/data-source.js"></script>
-  <script src="../assets/js/admin-config.js"></script>
+  <script src="../assets/js/data-source.js?v=20260909"></script>
+  <script src="../assets/js/admin-config.js?v=20260909"></script>
   <script>
   function isPending(u) {
     const v = u.approved;
@@ -888,7 +888,7 @@
         <td>${formatDateShort(n.fecha)}</td>
         <td>${n.aprobado ? '<span class="badge badge-success">Aprobada</span>' : '<span class="badge badge-warning">Pendiente</span>'}</td>
         <td><div class="table-actions">
-          ${n.pdf_url ? `<a href="${n.pdf_url}" target="_blank" class="btn-admin btn-admin-secondary btn-admin-sm" title="Ver PDF"><i class="fas fa-eye"></i></a>` : ''}
+          ${n.pdf_url ? `<a href="${n.pdf_url}" target="_blank" rel="noopener" class="btn-admin btn-admin-secondary btn-admin-sm" title="Abrir documento"><i class="fas fa-file-lines"></i></a>` : ''}
           ${(showApproval === true || (showApproval === null && !n.aprobado)) ? `
             <button class="btn-admin btn-admin-success btn-admin-sm" onclick="approveNota('${n.id}')"><i class="fas fa-check"></i> Aprobar</button>
             <button class="btn-admin btn-admin-danger btn-admin-sm" onclick="rejectNota('${n.id}')"><i class="fas fa-times"></i> Rechazar</button>` : ''}

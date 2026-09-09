@@ -1,5 +1,5 @@
 /* ============================================================
-   CER — Centro de Estudios Estratégicos Renovación
+   Centros de Estudios Renovación
    Sistema de diseño "cobalto profundo" (carpeta /ceer)
    ============================================================ */
 
@@ -165,36 +165,11 @@ body {
   padding: .85rem 0;
 }
 
-/* Lockup de marca provisional: mosaico CEER + wordmark CER */
-.logo a {
-  display: inline-flex;
-  align-items: center;
-  gap: .6rem;
-}
+.logo a { display: inline-flex; align-items: center; }
 .logo-img {
-  height: 46px;
-  width: 46px;
-  border-radius: 11px;
-  object-fit: cover;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 6px 18px -6px rgba(75,75,255,.7);
-}
-.logo-wordmark {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.05;
-}
-.logo-wordmark b {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-  color: #fff;
-}
-.logo-wordmark span {
-  font-size: .58rem;
-  font-weight: 500;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
+  height: 44px;
+  width: auto;
+  display: block;
 }
 
 /* ---------- Nav ---------- */
@@ -686,9 +661,8 @@ section:not(.hero-slider) {
   gap: var(--spacing-xl);
   margin-bottom: var(--spacing-xl);
 }
-.footer-logo { display: flex; align-items: center; gap: .6rem; margin-bottom: var(--spacing-md); }
-.footer-logo-img { height: 34px; width: 34px; border-radius: 8px; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.12); }
-.footer-logo b { font-size: 1rem; font-weight: 800; letter-spacing: .14em; color: #fff; }
+.footer-logo { display: flex; align-items: center; margin-bottom: var(--spacing-md); }
+.footer-logo-img { height: 42px; width: auto; display: block; }
 .footer-description { color: var(--gray-500); line-height: 1.6; max-width: 300px; }
 .footer-title { font-size: var(--font-size-base); font-weight: 700; color: #fff; margin-bottom: var(--spacing-md); }
 .footer-links li { margin-bottom: var(--spacing-sm); }

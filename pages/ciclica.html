@@ -4,37 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cíclica — Revista de Opinión | CER</title>
-    <meta name="description" content="Cíclica, la revista de opinión del CER — Centro de Estudios Estratégicos Renovación.">
+    <title>Cíclica — Revista de Opinión</title>
+    <meta name="description" content="Cíclica, la revista de opinión de Centros de Estudios Renovación.">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/observatorio.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260909">
+    <link rel="stylesheet" href="../assets/css/observatorio.css?v=20260909">
     <style>
-        /* ---- Cíclica ---- */
-        .ciclica-hero {
+        /* ---- Cíclica · aesthetic clara con celestes ---- */
+        :root {
+            --cic-ink:      #12303f;
+            --cic-ink-soft: #4a6472;
+            --cic-bg:       #f2f9fd;
+            --cic-surface:  #ffffff;
+            --cic-celeste:  #2a9ccb;
+            --cic-celeste-d:#1c7ba3;
+            --cic-celeste-l:#e4f3fb;
+            --cic-line:     #d3e7f1;
+        }
+
+        /* la página de Cíclica va sobre fondo claro */
+        body { background: var(--cic-bg); background-image: none; color: var(--cic-ink); }
+        .ciclica-body ::selection { background: var(--cic-celeste); color: #fff; }
+
+        section.ciclica-hero {
             position: relative;
             isolation: isolate;          /* el degradado queda SIEMPRE de fondo */
             overflow: hidden;
             text-align: center;
             color: #fff;
-            padding: calc(80px + 4rem) 0 4rem;
-            background: var(--cer-bg);
-            background-image: var(--cer-pattern);
+            padding: 5rem 0 4.5rem;
+            background: linear-gradient(160deg, #2ea6d4 0%, #1f7fa8 55%, #17698c 100%);
         }
         .ciclica-hero::before {
             content: "";
             position: absolute;
             z-index: 0;                  /* detrás del contenido */
-            width: min(620px, 90%); height: 360px;
-            top: 30%; left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            background: radial-gradient(ellipse at center, rgba(34, 211, 238, .22), transparent 72%);
-            filter: blur(90px);
+            inset: -20% -10% auto -10%;
+            height: 520px;
+            background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, .35), transparent 60%);
             pointer-events: none;
         }
         .ciclica-hero .container,
@@ -42,41 +53,44 @@
 
         .ciclica-badge {
             display: inline-block;
-            background: rgba(34, 211, 238, .12);
-            border: 1px solid rgba(34, 211, 238, .4);
-            color: var(--cer-cyan);
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .45);
+            color: #fff;
             padding: .35rem 1rem;
             border-radius: 999px;
             font-size: .78rem;
-            font-weight: 600;
-            letter-spacing: .08em;
+            font-weight: 700;
+            letter-spacing: .1em;
             text-transform: uppercase;
             margin-bottom: 1.5rem;
         }
         .ciclica-hero h1 {
+            font-family: "Source Serif 4", Georgia, serif;
             font-size: clamp(2.8rem, 6vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -.03em;
+            font-weight: 600;
+            letter-spacing: -.02em;
             line-height: 1;
             margin-bottom: .5rem;
         }
         .ciclica-hero h2 {
             font-size: clamp(1rem, 2.5vw, 1.3rem);
             font-weight: 400;
-            color: rgba(255, 255, 255, .8);
+            color: rgba(255, 255, 255, .9);
             max-width: 560px;
             margin: 0 auto 2rem;
             line-height: 1.55;
         }
 
-        .ciclica-body { background: var(--cer-bg-2); padding: 4rem 0 5rem; min-height: 50vh; }
+        .ciclica-body { background: var(--cic-bg); padding: 4rem 0 5rem; min-height: 50vh; }
+        .ciclica-body .section-title { color: var(--cic-ink); }
+        .ciclica-body .section-subtitle { color: var(--cic-ink-soft); }
 
         .ciclica-submit-btn {
             display: inline-flex;
             align-items: center;
             gap: .5rem;
-            background: linear-gradient(135deg, var(--cer-cyan), #0e93b3);
-            color: #04121a;
+            background: #fff;
+            color: var(--cic-celeste-d);
             border: none;
             padding: .8rem 2rem;
             border-radius: .5rem;
@@ -84,43 +98,49 @@
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            transition: transform .2s, box-shadow .2s;
+            transition: transform .2s, box-shadow .2s, background .2s;
         }
-        .ciclica-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -10px rgba(34, 211, 238, .6); }
+        .ciclica-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -12px rgba(0, 0, 0, .35); }
+        /* variante dentro del cuerpo claro (modal) */
+        .ciclica-modal .ciclica-submit-btn { background: var(--cic-celeste); color: #fff; }
+        .ciclica-modal .ciclica-submit-btn:hover { background: var(--cic-celeste-d); }
 
         .notes-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         @media (min-width: 768px)  { .notes-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .notes-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .note-card {
-            background: var(--cer-surface);
-            border: 1px solid rgba(34, 211, 238, .18);
+            display: flex;
+            flex-direction: column;
+            background: var(--cic-surface);
+            border: 1px solid var(--cic-line);
             border-radius: .875rem;
             padding: 1.5rem;
+            color: inherit;
             transition: transform .2s, box-shadow .2s, border-color .2s;
         }
-        .note-card:hover { transform: translateY(-4px); border-color: rgba(34, 211, 238, .55); box-shadow: 0 16px 40px -18px rgba(34, 211, 238, .4); }
+        .note-card:hover { transform: translateY(-4px); border-color: var(--cic-celeste); box-shadow: 0 18px 40px -20px rgba(28, 123, 163, .5); }
         .note-card--foto { padding: 0; overflow: hidden; }
         .note-card--foto .note-meta,
         .note-card--foto .note-title,
         .note-card--foto .note-excerpt,
         .note-card--foto .note-link { margin-left: 1.5rem; margin-right: 1.5rem; }
         .note-card--foto .note-meta { margin-top: 1.25rem; }
-        .note-card--foto .note-link { display: inline-block; margin-bottom: 1.5rem; }
+        .note-card--foto .note-link { margin-bottom: 1.5rem; }
         .note-foto { width: 100%; height: 180px; object-fit: cover; display: block; }
         .note-meta { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-bottom: .75rem; }
-        .note-tag { background: var(--cer-cyan); color: #04121a; padding: 2px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
-        .note-date { font-size: .8rem; color: var(--gray-500); }
-        .note-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: .5rem; line-height: 1.4; }
-        .note-excerpt { font-size: .875rem; color: var(--gray-500); line-height: 1.6; margin-bottom: 1rem; }
-        .note-link { color: var(--cer-cyan); font-weight: 600; font-size: .875rem; display: inline-flex; align-items: center; gap: .4rem; text-decoration: none; }
-        .note-link:hover { gap: .7rem; }
+        .note-tag { background: var(--cic-celeste-l); color: var(--cic-celeste-d); padding: 3px 11px; border-radius: 999px; font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+        .note-date { font-size: .8rem; color: var(--cic-ink-soft); }
+        .note-title { font-family: "Source Serif 4", Georgia, serif; font-size: 1.2rem; font-weight: 600; color: var(--cic-ink); margin-bottom: .5rem; line-height: 1.3; }
+        .note-excerpt { font-size: .9rem; color: var(--cic-ink-soft); line-height: 1.65; margin-bottom: 1rem; }
+        .note-link { color: var(--cic-celeste-d); font-weight: 700; font-size: .875rem; display: inline-flex; align-items: center; gap: .4rem; margin-top: auto; }
+        .note-card:hover .note-link { gap: .7rem; }
 
         /* Modal */
         .ciclica-modal-overlay {
             display: none;
             position: fixed; inset: 0;
-            background: rgba(0, 0, 0, .6);
+            background: rgba(18, 48, 63, .5);
             backdrop-filter: blur(4px);
             z-index: 9999;
             align-items: center;
@@ -130,58 +150,55 @@
         .ciclica-modal-overlay.active { display: flex; }
         .ciclica-modal {
             position: relative;
-            background: var(--cer-surface);
-            border: 1px solid var(--line);
+            background: var(--cic-surface);
+            border: 1px solid var(--cic-line);
             border-radius: 1rem;
             padding: 2rem;
             width: 100%;
             max-width: 540px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 40px 80px -20px rgba(18, 48, 63, .4);
         }
-        .ciclica-modal h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; color: #fff; }
-        .ciclica-modal p { color: var(--gray-500); }
-        .ciclica-modal label { display: block; font-size: .875rem; font-weight: 600; margin-bottom: .35rem; color: var(--gray-700); }
+        .ciclica-modal h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--cic-ink); }
+        .ciclica-modal p { color: var(--cic-ink-soft); }
+        .ciclica-modal label { display: block; font-size: .875rem; font-weight: 600; margin-bottom: .35rem; color: var(--cic-ink); }
         .ciclica-modal input,
         .ciclica-modal textarea {
             width: 100%;
-            border: 1.5px solid var(--gray-300);
-            background: rgba(255, 255, 255, .04);
-            color: var(--ink);
+            border: 1.5px solid var(--cic-line);
+            background: #fbfdff;
+            color: var(--cic-ink);
             border-radius: .5rem;
             padding: .65rem .85rem;
             font-size: .9rem;
             font-family: inherit;
-            transition: border-color .2s;
+            transition: border-color .2s, box-shadow .2s;
             margin-bottom: 1rem;
         }
         .ciclica-modal input::placeholder,
-        .ciclica-modal textarea::placeholder { color: var(--gray-500); }
+        .ciclica-modal textarea::placeholder { color: #9db6c2; }
         .ciclica-modal input:focus,
-        .ciclica-modal textarea:focus { outline: none; border-color: var(--cer-cyan); }
+        .ciclica-modal textarea:focus { outline: none; border-color: var(--cic-celeste); box-shadow: 0 0 0 3px rgba(42, 156, 203, .15); }
         .ciclica-modal textarea { resize: vertical; min-height: 90px; }
         .ciclica-modal-close {
             position: absolute; top: 1rem; right: 1rem;
             background: none; border: none; font-size: 1.5rem;
-            cursor: pointer; color: var(--gray-500); line-height: 1;
+            cursor: pointer; color: var(--cic-ink-soft); line-height: 1;
         }
-        .ciclica-modal-close:hover { color: #fff; }
-        .char-counter { font-size: .75rem; color: var(--gray-500); text-align: right; margin-top: -.75rem; margin-bottom: .75rem; }
-        .char-counter.over { color: #f87171; font-weight: 600; }
-
-        #notaDropZone { border: 2px dashed var(--gray-300); border-radius: .5rem; padding: 1.5rem; text-align: center; cursor: pointer; margin-bottom: 1rem; transition: border-color .2s; }
-        #notaDropZone:hover { border-color: var(--cer-cyan); }
+        .ciclica-modal-close:hover { color: var(--cic-ink); }
+        .char-counter { font-size: .75rem; color: var(--cic-ink-soft); text-align: right; margin-top: -.75rem; margin-bottom: .75rem; }
+        .char-counter.over { color: #dc2626; font-weight: 600; }
 
         .alert-ciclica { padding: .875rem 1.25rem; border-radius: .5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: .625rem; font-size: .9rem; font-weight: 500; }
-        .alert-ciclica.success { background: rgba(16, 185, 129, .12); color: #6ee7b7; }
-        .alert-ciclica.error { background: rgba(239, 68, 68, .12); color: #fca5a5; }
-        .alert-ciclica.info { background: rgba(75, 75, 255, .14); color: #b4b4ff; }
+        .alert-ciclica.success { background: #dcfce7; color: #166534; }
+        .alert-ciclica.error { background: #fee2e2; color: #b91c1c; }
+        .alert-ciclica.info { background: var(--cic-celeste-l); color: var(--cic-celeste-d); }
 
         .spinner-ciclica {
             width: 38px; height: 38px; margin: 2rem auto; display: block;
-            border: 3px solid rgba(255, 255, 255, .12);
-            border-top-color: var(--cer-cyan);
+            border: 3px solid var(--cic-line);
+            border-top-color: var(--cic-celeste);
             border-radius: 50%;
             animation: cer-spin .8s linear infinite;
         }
@@ -194,10 +211,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <a href="../index.html#inicio" aria-label="CER — inicio">
-                        <img src="../assets/img/ceer-logo.png" alt="" class="logo-img">
-                        <span class="logo-wordmark"><b>CER</b><span>Estudios Estratégicos Renovación</span></span>
-                    </a>
+                    <a href="../index.html#inicio" aria-label="Centros de Estudios Renovación — inicio"><img src="../assets/img/logos.png" alt="Centros de Estudios Renovación" class="logo-img"></a>
                 </div>
                 <nav class="nav-desktop" aria-label="Principal">
                     <ul class="nav-list">
@@ -273,22 +287,25 @@
             <label for="notaTitulo">Título *</label>
             <input type="text" id="notaTitulo" placeholder="Título de la nota" maxlength="200">
 
-            <label for="notaDescripcion">Resumen / Descripción * <span style="font-weight:400;color:var(--gray-500);">(máx. 500 caracteres)</span></label>
+            <label for="notaDescripcion">Resumen / Descripción * <span style="font-weight:400;color:var(--cic-ink-soft);">(máx. 500 caracteres)</span></label>
             <textarea id="notaDescripcion" rows="4" placeholder="Breve descripción o resumen de tu nota de opinión" maxlength="500" oninput="updateCharCount(this,'descCounter',500)"></textarea>
             <div class="char-counter" id="descCounter">0 / 500</div>
 
-            <label for="notaFecha">Fecha *</label>
-            <input type="date" id="notaFecha">
+            <label for="notaDoc">Link a tu nota (Google Docs) *</label>
+            <input type="url" id="notaDoc" placeholder="https://docs.google.com/document/d/…">
+            <p style="font-size:.78rem;color:var(--cic-ink-soft);margin-top:-.7rem;margin-bottom:1rem;">
+                Compartí el documento como “cualquier persona con el enlace puede ver”. Nosotros lo revisamos, lo maquetamos y lo publicamos.
+            </p>
 
-            <label for="notaEmail">Tu email <span style="font-weight:400;color:var(--gray-500);">(opcional, para contactarte)</span></label>
+            <label for="notaEmail">Tu email <span style="font-weight:400;color:var(--cic-ink-soft);">(opcional, para contactarte)</span></label>
             <input type="email" id="notaEmail" placeholder="tu@email.com">
 
-            <label for="notaFoto">Foto <span style="font-weight:400;color:var(--gray-500);">(opcional — pegá el link de una imagen)</span></label>
+            <label for="notaFoto">Foto <span style="font-weight:400;color:var(--cic-ink-soft);">(opcional — pegá el link de una imagen)</span></label>
             <input type="url" id="notaFoto" placeholder="https://…/foto.jpg">
 
             <button class="ciclica-submit-btn" style="width:100%;justify-content:center;margin-top:.25rem;" onclick="submitNota()" id="submitNoteBtn">
                 <span id="submitNoteBtnText"><i class="fas fa-paper-plane"></i> Enviar tu nota</span>
-                <span id="submitNoteSpinner" style="display:none;width:18px;height:18px;border:2px solid rgba(0,0,0,.25);border-top-color:#04121a;border-radius:50%;animation:cer-spin .8s linear infinite;"></span>
+                <span id="submitNoteSpinner" style="display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:cer-spin .8s linear infinite;"></span>
             </button>
         </div>
     </div>
@@ -297,8 +314,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <div class="footer-logo"><img src="../assets/img/ceer-logo.png" alt="" class="footer-logo-img"><b>CER</b></div>
-                    <p class="footer-description">Centro de Estudios Estratégicos Renovación — investigación y análisis multidisciplinario.</p>
+                    <div class="footer-logo"><img src="../assets/img/logos.png" alt="Centros de Estudios Renovación" class="footer-logo-img"></div>
+                    <p class="footer-description">Red de centros y observatorios de investigación y análisis.</p>
                 </div>
                 <div class="footer-section">
                     <h4 class="footer-title">Enlaces</h4>
@@ -332,13 +349,13 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 CER — Centro de Estudios Estratégicos Renovación. Todos los derechos reservados.</p>
+                <p>&copy; 2026 Centros de Estudios Renovación. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/data-source.js"></script>
+    <script src="../assets/js/main.js?v=20260909"></script>
+    <script src="../assets/js/data-source.js?v=20260909"></script>
     <script>
         function formatMY(s) {
             if (!s) return '';
@@ -353,7 +370,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('notaFecha').valueAsDate = new Date();
             loadNotes();
             document.getElementById('submitModal').addEventListener('click', e => {
                 if (e.target === e.currentTarget) closeSubmitModal();
@@ -366,27 +382,27 @@
                 const notes = await CERData.getNotes(true);
 
                 if (!notes.length) {
-                    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--gray-500);">
-                        <i class="fas fa-newspaper" style="font-size:3rem;opacity:.3;display:block;margin-bottom:1rem;"></i>
-                        <p>Aún no hay notas publicadas. <button onclick="openSubmitModal()" style="background:none;border:none;cursor:pointer;color:var(--cer-cyan);font-weight:600;font-size:inherit;">¡Enviá la primera!</button></p>
+                    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--cic-ink-soft);">
+                        <i class="fas fa-newspaper" style="font-size:3rem;opacity:.25;display:block;margin-bottom:1rem;"></i>
+                        <p>Aún no hay notas publicadas. <button onclick="openSubmitModal()" style="background:none;border:none;cursor:pointer;color:var(--cic-celeste-d);font-weight:700;font-size:inherit;">¡Enviá la primera!</button></p>
                     </div>`;
                     return;
                 }
 
                 grid.innerHTML = notes.map(n => `
-                    <article class="note-card${n.foto_url ? ' note-card--foto' : ''}">
+                    <a class="note-card${n.foto_url ? ' note-card--foto' : ''}" href="nota.html?id=${encodeURIComponent(n.id)}">
                         ${n.foto_url ? `<img class="note-foto" src="${encodeURI(n.foto_url)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
                         <div class="note-meta">
-                            <span class="note-tag">Nota de Opinión</span>
+                            <span class="note-tag">Nota de opinión</span>
                             <span class="note-date">${formatMY(n.fecha)}</span>
                         </div>
                         <h3 class="note-title">${esc(n.titulo)}</h3>
                         ${n.descripcion ? `<p class="note-excerpt">${esc(n.descripcion)}</p>` : ''}
-                        ${n.pdf_url ? `<a href="${encodeURI(n.pdf_url)}" target="_blank" rel="noopener" class="note-link">Leer nota <i class="fas fa-arrow-right"></i></a>` : ''}
-                    </article>
+                        <span class="note-link">Leer nota <i class="fas fa-arrow-right"></i></span>
+                    </a>
                 `).join('');
             } catch (e) {
-                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:#f87171;">Error al cargar las notas.</div>`;
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:#b91c1c;">Error al cargar las notas.</div>`;
             }
         }
 
@@ -410,12 +426,15 @@
         async function submitNota() {
             const titulo = document.getElementById('notaTitulo').value.trim();
             const descripcion = document.getElementById('notaDescripcion').value.trim();
-            const fecha = document.getElementById('notaFecha').value;
+            const docLink = document.getElementById('notaDoc').value.trim();
             const email = document.getElementById('notaEmail').value.trim();
             const foto = document.getElementById('notaFoto').value.trim();
+            // La fecha ya no se elige: se toma la de hoy automáticamente.
+            const fecha = new Date().toISOString().slice(0, 10);
 
-            if (!titulo || !descripcion || !fecha) { showSubmitMsg('Completá título, descripción y fecha', 'error'); return; }
+            if (!titulo || !descripcion || !docLink) { showSubmitMsg('Completá título, descripción y el link a tu documento', 'error'); return; }
             if (descripcion.length > 500) { showSubmitMsg('La descripción supera los 500 caracteres', 'error'); return; }
+            if (!/^https?:\/\//i.test(docLink)) { showSubmitMsg('El link a tu nota debe empezar con http', 'error'); return; }
             if (foto && !/^https?:\/\//i.test(foto)) { showSubmitMsg('El link de la foto debe empezar con http', 'error'); return; }
 
             const btn = document.getElementById('submitNoteBtn');
@@ -427,7 +446,7 @@
             try {
                 const qs = new URLSearchParams({
                     action: 'createNote',
-                    data: JSON.stringify({ titulo, descripcion, fecha, email_autor: email, foto_url: foto })
+                    data: JSON.stringify({ titulo, descripcion, fecha, email_autor: email, foto_url: foto, pdf_url: docLink })
                 });
                 const res = await fetch(`${window.CER_API}?${qs.toString()}`, { method: 'POST' });
                 const data = await res.json();
@@ -436,9 +455,11 @@
                 showSubmitMsg('¡Nota enviada! La revisará el equipo editorial antes de publicarla.', 'success');
                 document.getElementById('notaTitulo').value = '';
                 document.getElementById('notaDescripcion').value = '';
+                document.getElementById('notaDoc').value = '';
                 document.getElementById('notaEmail').value = '';
                 document.getElementById('notaFoto').value = '';
                 document.getElementById('descCounter').textContent = '0 / 500';
+                if (window.CERData && CERData.clearCache) CERData.clearCache();
                 setTimeout(closeSubmitModal, 3000);
             } catch (err) {
                 showSubmitMsg(err.message || 'Error al enviar la nota', 'error');

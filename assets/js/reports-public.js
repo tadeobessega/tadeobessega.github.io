@@ -14,6 +14,10 @@ const CENTRO_COLORS = {
   'Cíclica': '#2fb8e6'
 };
 
+// Ruta a las subpáginas (funciona desde la raíz y desde /pages/)
+const PAGES_BASE = /\/pages\/$/.test(location.pathname.replace(/[^/]*$/, '')) ? '' : 'pages/';
+function informeUrl(id) { return `${PAGES_BASE}informe.html?id=${encodeURIComponent(id)}`; }
+
 function formatMonthYear(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
@@ -57,7 +61,7 @@ async function loadCentroPublicaciones(centroId, centroSlug) {
         </div>
         <h3 class="publicacion-title">${esc(r.titulo)}</h3>
         ${r.descripcion ? `<p class="publicacion-excerpt">${esc(r.descripcion)}</p>` : ''}
-        ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="publicacion-link-${centroSlug}"><i class="fas fa-file-arrow-down"></i> Descargar PDF</a>` : ''}
+        <a href="${informeUrl(r.id)}" class="publicacion-link-${centroSlug}">Ver informe <i class="fas fa-arrow-right"></i></a>
       </article>
     `).join('');
   } catch (e) {
@@ -89,7 +93,7 @@ async function loadUltimasPublicaciones() {
               ? (r.descripcion.length > 140 ? r.descripcion.slice(0, 140) + '…' : r.descripcion)
               : r.tag
           )}</p>
-          ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="informe-link"><i class="fas fa-file-arrow-down"></i> Descargar PDF</a>` : ''}
+          <a href="${informeUrl(r.id)}" class="informe-link">Ver informe <i class="fas fa-arrow-right"></i></a>
         </div>
       </article>
     `).join('');
@@ -119,7 +123,7 @@ async function loadInformesDestacados() {
         </div>
         <h3 class="informe-title">${esc(r.titulo)}</h3>
         <p class="informe-excerpt">${esc(r.descripcion || r.tag)}</p>
-        ${r.pdf_url ? `<a href="${encodeURI(r.pdf_url)}" target="_blank" rel="noopener" class="informe-link"><i class="fas fa-file-arrow-down"></i> Descargar PDF</a>` : ''}
+        <a href="${informeUrl(r.id)}" class="informe-link">Ver informe <i class="fas fa-arrow-right"></i></a>
       </article>
     `).join('');
   } catch (e) {
