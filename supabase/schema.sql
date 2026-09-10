@@ -33,7 +33,8 @@ $$;
 
 -- >>> CARGAR ACÁ cada persona de la redacción <<<
 insert into public.editores (email) values
-  ('nicolasignacioalbornozcabral@gmail.com')
+  ('tadeobessega@gmail.com'),
+  ('nicolasigalbornoz@gmail.com')
 on conflict (email) do nothing;
 
 -- ------------------------------------------------------------
