@@ -75,6 +75,8 @@
 
   // ---------- Envío público (formulario) ----------
   // payload: { titulo, autor, email_autor, bajada, centros[], cuerpo_html?, doc_url? }
+  // Nota: el visitante anónimo NO puede leer borradores, así que el insert
+  // no pide la fila de vuelta (con `.select()` PostgREST fallaría al releerla).
   function crearBorrador(payload) {
     var row = {
       titulo:      (payload.titulo || '').trim(),
@@ -87,7 +89,10 @@
       estado:      'borrador',
       destacada:   false
     };
-    return need().from('notas').insert(row).select('id').single().then(unwrap);
+    return need().from('notas').insert(row).then(function (r) {
+      if (r.error) throw new Error(r.error.message);
+      return true;
+    });
   }
 
   function subirDocPublico(file) {
