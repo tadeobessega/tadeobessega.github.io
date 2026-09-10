@@ -25,7 +25,14 @@
     if (_sb) return _sb;
     if (!SUPABASE_URL || !SUPABASE_ANON || !global.supabase) return null;
     _sb = global.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-      auth: { persistSession: true, autoRefreshToken: true, storageKey: 'ciclica-auth' }
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        storageKey: 'ciclica-auth',
+        // Lock "pasa-manos": evita el cuelgue conocido de supabase-js cuando
+        // se encadena una consulta justo después de signIn (Navigator LockManager).
+        lock: function (_name, _acquireTimeout, fn) { return fn(); }
+      }
     });
     return _sb;
   }
