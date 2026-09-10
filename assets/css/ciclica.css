@@ -25,6 +25,11 @@
 }
 .cic-prose > *:first-child { margin-top: 0; }
 .cic-prose p { margin: 0 0 1.25rem; }
+.cic-prose h1 { /* por si se cuela un H1 desde texto pegado */
+  font-family: var(--cic-serif);
+  font-size: 1.5rem; font-weight: 600; line-height: 1.3;
+  color: var(--cic-ink); margin: 2.4rem 0 .9rem;
+}
 .cic-prose h2 {
   font-family: var(--cic-serif);
   font-size: 1.5rem; font-weight: 600; line-height: 1.3;

@@ -684,9 +684,22 @@
             });
         }
 
+        var MAMMOTH_OPTS = {
+            styleMap: [
+                "p[style-name='Title'] => h2:fresh",
+                "p[style-name='Heading 1'] => h2:fresh",
+                "p[style-name='Heading 2'] => h2:fresh",
+                "p[style-name='Heading 3'] => h3:fresh",
+                "p[style-name='Heading 4'] => h3:fresh",
+                "p[style-name='Quote'] => blockquote:fresh",
+                "p[style-name='Intense Quote'] => blockquote:fresh"
+            ]
+        };
+
         function importArrayBuffer(ab) {
             $('#wordMsg').textContent = 'Convirtiendo…';
-            return mammoth.convertToHtml({ arrayBuffer: ab }, { convertImage: wordImageUploader() })
+            return mammoth.convertToHtml({ arrayBuffer: ab },
+                    Object.assign({ convertImage: wordImageUploader() }, MAMMOTH_OPTS))
                 .then(function (res) {
                     if (quill.getText().trim() && !confirm('Esto reemplaza el cuerpo actual. ¿Seguir?')) {
                         $('#wordMsg').textContent = '';
