@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.snow.css">
-    <link rel="stylesheet" href="../assets/css/ciclica.css?v=20260910">
+    <link rel="stylesheet" href="../assets/css/ciclica.css?v=20260910c">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -174,8 +174,11 @@
             </label>
             <button class="ce-btn ce-btn--primary ce-btn--block" id="loginBtn" type="submit">Entrar</button>
             <p id="loginStatus" style="margin-top:.9rem;text-align:center;font-size:.8rem;color:var(--cic-ink-soft);min-height:1.1em;"></p>
+            <pre id="loginTrace" style="display:none;margin-top:.75rem;padding:.6rem .7rem;background:#0d1b24;color:#cfe9f6;font-size:.68rem;line-height:1.5;border-radius:.5rem;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow:auto;"></pre>
             <p style="margin-top:.75rem;text-align:center;font-size:.82rem;">
                 <a href="../index.html" style="color:var(--cic-celeste-d);">← Volver al sitio</a>
+                &nbsp;·&nbsp;
+                <a href="#" id="traceToggle" style="color:var(--cic-ink-soft);">ver diagnóstico</a>
             </p>
         </form>
     </div>
@@ -306,16 +309,55 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
-    <script src="../assets/js/ciclica-data.js?v=20260910"></script>
+    <script src="../assets/js/ciclica-data.js?v=20260910c"></script>
     <script>
     (function () {
         'use strict';
         var $ = function (s, r) { return (r || document).querySelector(s); };
+
+        // ---- diagnóstico visible ----
+        function trace(msg) {
+            try {
+                var box = $('#loginTrace');
+                var t = new Date();
+                var line = '[' + t.toTimeString().slice(0, 8) + '.' + String(t.getMilliseconds()).padStart(3, '0') + '] ' + msg;
+                if (box) { box.style.display = 'block'; box.textContent += (box.textContent ? '\n' : '') + line; box.scrollTop = box.scrollHeight; }
+                if (window.console) console.log('[ciclica] ' + line);
+            } catch (e) {}
+        }
+        window.addEventListener('error', function (e) {
+            trace('ERROR JS: ' + (e.message || e.error) + ' @ ' + (e.filename || '').split('/').pop() + ':' + e.lineno);
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+            trace('PROMESA sin manejar: ' + (e.reason && e.reason.message || e.reason));
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var tg = $('#traceToggle');
+            if (tg) tg.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                var b = $('#loginTrace');
+                b.style.display = b.style.display === 'none' ? 'block' : 'none';
+                if (!b.textContent) b.textContent = '(sin actividad todavía)';
+            });
+        });
+
         var D = window.CiclicaData;
+        trace('carga: supabase=' + (typeof window.supabase) + ' Quill=' + (typeof window.Quill)
+            + ' mammoth=' + (typeof window.mammoth) + ' DOMPurify=' + (typeof window.DOMPurify)
+            + ' CiclicaData=' + (typeof D));
+
+        if (!D) {
+            trace('FATAL: no cargó assets/js/ciclica-data.js — el editor no puede funcionar.');
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = $('#loginErr');
+                if (el) { el.textContent = 'No cargó el módulo de datos (ciclica-data.js). Recargá con Ctrl+Shift+R; si sigue, hay un bloqueo de red.'; el.hidden = false; }
+            });
+            return;
+        }
 
         var quill = null;
         var current = null;          // nota en edición (objeto) o null
@@ -352,14 +394,21 @@
             $('#loginCfgWarn').hidden = D.configured();
         }
         function enterApp(user) {
+            trace('enterApp: mostrando panel para ' + user.email);
             $('#loginErr').hidden = true;
             loginStatus('');
             $('#loginView').hidden = true;
             $('#appView').hidden = false;
             $('#topUser').textContent = user.email;
-            if (!quill) initEditor();
-            renderCentrosChips();
-            loadList();
+            try {
+                if (!quill) { initEditor(); trace('enterApp: editor listo'); }
+                renderCentrosChips();
+                loadList();
+                trace('enterApp: OK');
+            } catch (ex) {
+                trace('enterApp ERROR: ' + ex.message);
+                loginError('Entró pero falló al armar el editor: ' + ex.message);
+            }
         }
 
         function withTimeout(promise, ms, label) {
@@ -373,13 +422,16 @@
 
         // Corre TODO el chequeo y devuelve una promesa; cualquier fallo => mensaje visible.
         function attemptEnter(user, fromForm) {
+            trace('attemptEnter: usuario=' + user.email + ' — llamando soyEditor()');
             loginStatus('Verificando permisos…');
             return withTimeout(D.soyEditor(), 12000, 'La verificación').then(function (ok) {
+                trace('soyEditor() respondió: ' + ok);
                 if (ok) { enterApp(user); return; }
                 loginError('La cuenta ' + user.email + ' no está en la lista de editores. '
                     + 'Pedí que te agreguen (tabla public.editores en Supabase).');
                 return D.signOut();
             }).catch(function (ex) {
+                trace('soyEditor() FALLÓ: ' + ex.message);
                 loginError('No se pudo verificar la cuenta: ' + ex.message + ' — probá recargar la página.');
                 if (fromForm) { try { D.signOut(); } catch (e) {} }
             });
@@ -395,8 +447,10 @@
             if (!email || !pass) { loginError('Completá email y contraseña.'); return; }
             btn.disabled = true; btn.textContent = 'Entrando…';
             loginStatus('Conectando…');
+            trace('login: signIn(' + email + ') …');
             withTimeout(D.signIn(email, pass), 15000, 'La conexión')
                 .then(function (user) {
+                    trace('signIn OK: ' + user.email + ' — difiriendo chequeo de permisos');
                     // Diferido: deja terminar el evento de auth antes de tocar la base
                     // (evita cuelgues por el lock interno de supabase-js).
                     return new Promise(function (res) {
@@ -405,6 +459,7 @@
                 })
                 .catch(function (ex) {
                     var m = ex && ex.message || String(ex);
+                    trace('login FALLÓ: ' + m);
                     if (/invalid login/i.test(m)) m = 'Email o contraseña incorrectos.';
                     else if (/email not confirmed/i.test(m)) m = 'Ese usuario todavía no está confirmado (marcá "Auto Confirm" en Supabase).';
                     else if (/failed to fetch|networkerror/i.test(m)) m = 'No hay conexión con la base. Revisá internet y volvé a probar.';
@@ -495,10 +550,15 @@
         $('#listSearch').addEventListener('input', renderList);
 
         function loadList() {
-            D.listaTodas({ estado: 'todas' }).then(function (rows) {
+            trace('loadList: pidiendo notas…');
+            withTimeout(D.listaTodas({ estado: 'todas' }), 12000, 'La lista de notas').then(function (rows) {
                 listCache = rows || [];
+                trace('loadList: ' + listCache.length + ' notas');
                 renderList();
-            }).catch(function (ex) { console.error(ex); });
+            }).catch(function (ex) {
+                trace('loadList FALLÓ: ' + ex.message);
+                $('#notaList').innerHTML = '<li style="color:#b3261e;font-size:.8rem;padding:.5rem;">No se pudo cargar la lista: ' + esc(ex.message) + '</li>';
+            });
         }
 
         function renderList() {
@@ -780,15 +840,17 @@
         $('#previewModal').addEventListener('click', function (e) { if (e.target === this) this.classList.remove('is-open'); });
 
         // ---------------- arranque ----------------
+        trace('arranque: configured=' + D.configured());
         if (!D.configured()) {
             showLogin();
         } else {
             loginStatus('Revisando sesión…');
             withTimeout(D.currentUser(), 8000, 'La sesión').then(function (u) {
+                trace('currentUser: ' + (u ? u.email : 'sin sesión'));
                 if (u) { setTimeout(function () { attemptEnter(u, false); }, 0); return; }
                 loginStatus('');
                 showLogin();
-            }).catch(function () { loginStatus(''); showLogin(); });
+            }).catch(function (ex) { trace('currentUser FALLÓ: ' + ex.message); loginStatus(''); showLogin(); });
             // sólo reaccionamos a cierres de sesión hechos desde otra pestaña
             D.onAuthChange(function (u) {
                 if (!u && $('#appView') && !$('#appView').hidden) showLogin();
