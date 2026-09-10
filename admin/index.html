@@ -232,24 +232,20 @@
       <!-- ===== VIEW: NOTAS CÍCLICA ===== -->
       <div id="view-notas" class="view" style="display:none;">
         <div class="page-header">
-          <h1 class="page-title">Cíclica — Notas de Opinión</h1>
-          <p class="page-subtitle">Revisá y aprobá las notas enviadas por los colaboradores</p>
+          <h1 class="page-title">Cíclica — Redacción</h1>
+          <p class="page-subtitle">La gestión de notas de opinión se hace desde el editor de Cíclica</p>
         </div>
-
-        <div class="tab-nav">
-          <button class="tab-link active" data-tab="notas-pending"><i class="fas fa-clock"></i> Pendientes (<span id="notasPendingCount">0</span>)</button>
-          <button class="tab-link" data-tab="notas-approved"><i class="fas fa-check"></i> Aprobadas</button>
-          <button class="tab-link" data-tab="notas-all"><i class="fas fa-list"></i> Todas</button>
-        </div>
-
-        <div id="notas-pending-tab" class="tab-content active">
-          <div class="admin-card"><div class="admin-card-header"><h2 class="admin-card-title">Notas Pendientes de Aprobación</h2></div><div id="notasPendingContainer"></div></div>
-        </div>
-        <div id="notas-approved-tab" class="tab-content">
-          <div class="admin-card"><div class="admin-card-header"><h2 class="admin-card-title">Notas Aprobadas</h2></div><div id="notasApprovedContainer"></div></div>
-        </div>
-        <div id="notas-all-tab" class="tab-content">
-          <div class="admin-card"><div class="admin-card-header"><h2 class="admin-card-title">Todas las Notas</h2></div><div id="notasAllContainer"></div></div>
+        <div class="admin-card">
+          <div style="padding:2rem;text-align:center;">
+            <i class="fas fa-pen-nib" style="font-size:2rem;color:var(--ap);opacity:.7;"></i>
+            <p style="margin:1rem 0 1.5rem;max-width:520px;margin-left:auto;margin-right:auto;color:var(--muted);">
+              Cíclica ahora tiene su propio panel: cargás y formateás las notas (título, subtítulo,
+              cuerpo, imágenes), importás el Word que manda cada autor, y elegís qué se publica y qué se destaca.
+            </p>
+            <a href="ciclica.html" class="btn-admin btn-admin-primary" style="display:inline-flex;">
+              <i class="fas fa-arrow-up-right-from-square"></i> Abrir el editor de Cíclica
+            </a>
+          </div>
         </div>
       </div>
 
@@ -465,8 +461,7 @@
     document.getElementById('filterCentro').addEventListener('change', filterReports);
 
     await loadReports();
-    if (currentUser.role === 'admin') { loadUsers(); loadNotes(); loadFeaturedAdmin(); loadConfigUI(); }
-    else if (currentUser.centro === 'Cíclica') loadNotes();
+    if (currentUser.role === 'admin') { loadUsers(); loadFeaturedAdmin(); loadConfigUI(); }
   });
 
   async function loadDynamicConfig() {
