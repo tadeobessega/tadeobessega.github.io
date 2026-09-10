@@ -112,7 +112,16 @@
   }
   function signOut() { return need().auth.signOut(); }
   function soyEditor() {
-    return need().rpc('es_editor').then(function (r) { return !r.error && !!r.data; });
+    return need().rpc('es_editor').then(function (r) {
+      if (r.error) {
+        // función ausente = el SQL de la allowlist no se corrió
+        if (String(r.error.message || '').indexOf('es_editor') > -1) {
+          throw new Error('Falta correr el SQL de la lista de editores (función es_editor).');
+        }
+        throw new Error(r.error.message || 'No se pudo verificar permisos.');
+      }
+      return !!r.data;
+    });
   }
   function currentUser() {
     var c = sb();

@@ -173,7 +173,8 @@
                 <input class="ce-input" type="password" id="loginPass" autocomplete="current-password" required>
             </label>
             <button class="ce-btn ce-btn--primary ce-btn--block" id="loginBtn" type="submit">Entrar</button>
-            <p style="margin-top:1.25rem;text-align:center;font-size:.82rem;">
+            <p id="loginStatus" style="margin-top:.9rem;text-align:center;font-size:.8rem;color:var(--cic-ink-soft);min-height:1.1em;"></p>
+            <p style="margin-top:.75rem;text-align:center;font-size:.82rem;">
                 <a href="../index.html" style="color:var(--cic-celeste-d);">← Volver al sitio</a>
             </p>
         </form>
@@ -338,43 +339,63 @@
         }
 
         // ---------------- auth ----------------
-        function showApp(user) {
-            D.soyEditor().then(function (ok) {
-                if (!ok) {
-                    $('#loginView').hidden = false;
-                    $('#appView').hidden = true;
-                    var err = $('#loginErr');
-                    err.textContent = 'La cuenta ' + user.email + ' no tiene permisos de redacción. Pedí que te agreguen a la lista de editores.';
-                    err.hidden = false;
-                    D.signOut();
-                    return;
-                }
-                $('#loginErr').hidden = true;
-                $('#loginView').hidden = true;
-                $('#appView').hidden = false;
-                $('#topUser').textContent = user.email;
-                if (!quill) initEditor();
-                renderCentrosChips();
-                loadList();
-            });
+        function loginStatus(msg) { $('#loginStatus').textContent = msg || ''; }
+        function loginError(msg) {
+            var err = $('#loginErr');
+            err.textContent = msg;
+            err.hidden = false;
+            loginStatus('');
         }
         function showLogin() {
             $('#appView').hidden = true;
             $('#loginView').hidden = false;
             $('#loginCfgWarn').hidden = D.configured();
         }
+        function enterApp(user) {
+            $('#loginErr').hidden = true;
+            loginStatus('');
+            $('#loginView').hidden = true;
+            $('#appView').hidden = false;
+            $('#topUser').textContent = user.email;
+            if (!quill) initEditor();
+            renderCentrosChips();
+            loadList();
+        }
+
+        // Corre TODO el chequeo y devuelve una promesa; cualquier fallo => mensaje visible.
+        function attemptEnter(user, fromForm) {
+            loginStatus('Verificando permisos…');
+            return D.soyEditor().then(function (ok) {
+                if (ok) { enterApp(user); return; }
+                loginError('La cuenta ' + user.email + ' no está en la lista de editores. '
+                    + 'Pedí que te agreguen (tabla public.editores en Supabase).');
+                return D.signOut();
+            }).catch(function (ex) {
+                loginError('No se pudo verificar la cuenta: ' + ex.message);
+                if (fromForm) return D.signOut();
+            });
+        }
 
         $('#loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            var err = $('#loginErr'); err.hidden = true;
+            $('#loginErr').hidden = true;
             if (!D.configured()) { $('#loginCfgWarn').hidden = false; return; }
-            var btn = $('#loginBtn'); btn.disabled = true; btn.textContent = 'Entrando…';
-            D.signIn($('#loginEmail').value.trim(), $('#loginPass').value).then(function (user) {
-                showApp(user);
-            }).catch(function (ex) {
-                err.textContent = /invalid/i.test(ex.message) ? 'Email o contraseña incorrectos.' : ex.message;
-                err.hidden = false;
-            }).finally(function () { btn.disabled = false; btn.textContent = 'Entrar'; });
+            var btn = $('#loginBtn');
+            var email = $('#loginEmail').value.trim();
+            var pass = $('#loginPass').value;
+            if (!email || !pass) { loginError('Completá email y contraseña.'); return; }
+            btn.disabled = true; btn.textContent = 'Entrando…';
+            loginStatus('Conectando…');
+            D.signIn(email, pass)
+                .then(function (user) { return attemptEnter(user, true); })
+                .catch(function (ex) {
+                    var m = ex && ex.message || String(ex);
+                    if (/invalid login/i.test(m)) m = 'Email o contraseña incorrectos.';
+                    else if (/email not confirmed/i.test(m)) m = 'Ese usuario todavía no está confirmado (marcá "Auto Confirm" en Supabase).';
+                    else if (/failed to fetch|networkerror/i.test(m)) m = 'No hay conexión con la base. Revisá internet y volvé a probar.';
+                    loginError(m);
+                })
+                .finally(function () { btn.disabled = false; btn.textContent = 'Entrar'; });
         });
 
         $('#logoutBtn').addEventListener('click', function () {
@@ -747,8 +768,16 @@
         if (!D.configured()) {
             showLogin();
         } else {
-            D.currentUser().then(function (u) { u ? showApp(u) : showLogin(); });
-            D.onAuthChange(function (u) { if (!u) showLogin(); });
+            loginStatus('Revisando sesión…');
+            D.currentUser().then(function (u) {
+                if (u) return attemptEnter(u, false);
+                loginStatus('');
+                showLogin();
+            }).catch(function () { loginStatus(''); showLogin(); });
+            // sólo reaccionamos a cierres de sesión hechos desde otra pestaña
+            D.onAuthChange(function (u) {
+                if (!u && $('#appView') && !$('#appView').hidden) showLogin();
+            });
         }
     })();
     </script>
