@@ -111,6 +111,9 @@
     });
   }
   function signOut() { return need().auth.signOut(); }
+  function soyEditor() {
+    return need().rpc('es_editor').then(function (r) { return !r.error && !!r.data; });
+  }
   function currentUser() {
     var c = sb();
     if (!c) return Promise.resolve(null);
@@ -198,6 +201,7 @@
     // auth
     signIn: signIn,
     signOut: signOut,
+    soyEditor: soyEditor,
     currentUser: currentUser,
     onAuthChange: onAuthChange,
     // gestión

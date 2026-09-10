@@ -339,12 +339,24 @@
 
         // ---------------- auth ----------------
         function showApp(user) {
-            $('#loginView').hidden = true;
-            $('#appView').hidden = false;
-            $('#topUser').textContent = user.email;
-            if (!quill) initEditor();
-            renderCentrosChips();
-            loadList();
+            D.soyEditor().then(function (ok) {
+                if (!ok) {
+                    $('#loginView').hidden = false;
+                    $('#appView').hidden = true;
+                    var err = $('#loginErr');
+                    err.textContent = 'La cuenta ' + user.email + ' no tiene permisos de redacción. Pedí que te agreguen a la lista de editores.';
+                    err.hidden = false;
+                    D.signOut();
+                    return;
+                }
+                $('#loginErr').hidden = true;
+                $('#loginView').hidden = true;
+                $('#appView').hidden = false;
+                $('#topUser').textContent = user.email;
+                if (!quill) initEditor();
+                renderCentrosChips();
+                loadList();
+            });
         }
         function showLogin() {
             $('#appView').hidden = true;
