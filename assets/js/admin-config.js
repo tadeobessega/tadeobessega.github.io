@@ -15,8 +15,7 @@ const CENTROS = [
   { id: 'OPER',    name: 'Observatorio de Políticas Educativas',                color: '#e0564b' },
   { id: 'OPAL',    name: 'Observatorio para el Análisis Electoral',             color: '#16b7c2' },
   { id: 'OPSA',    name: 'Observatorio de Política Social Aplicada',            color: '#e07a3c' },
-  { id: 'CIREN',   name: 'Centro de Estudios Científicos Renovación',           color: '#14bd92' },
-  { id: 'Cíclica', name: 'Cíclica — Revista de Opinión',                        color: '#2fb8e6' }
+  { id: 'CIREN',   name: 'Centro de Estudios Científicos Renovación',           color: '#14bd92' }
 ];
 
 let TAGS = ['Informe', 'Informe Especial', 'Análisis', 'Investigación', 'Documento de Trabajo', 'Policy Brief', 'Nota Técnica', 'Revista'];

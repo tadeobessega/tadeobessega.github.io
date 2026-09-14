@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/admin.css?v=20260909">
+  <link rel="stylesheet" href="../assets/css/admin.css?v=20260910c">
 </head>
 <body class="admin-page">
 
@@ -385,8 +385,8 @@
     </div>
   </div>
 
-  <script src="../assets/js/data-source.js?v=20260909"></script>
-  <script src="../assets/js/admin-config.js?v=20260909"></script>
+  <script src="../assets/js/data-source.js?v=20260910c"></script>
+  <script src="../assets/js/admin-config.js?v=20260910c"></script>
   <script>
   function isPending(u) {
     const v = u.approved;
@@ -422,13 +422,10 @@
     if (currentUser.role === 'admin') {
       document.getElementById('usersNavLink').style.display  = 'inline-flex';
       document.getElementById('miembrosNavLink').style.display = 'inline-flex';
-      document.getElementById('notasNavLink').style.display  = 'inline-flex';
       document.getElementById('configNavLink').style.display = 'inline-flex';
       document.getElementById('pendingUsersCard').style.display = 'block';
-    } else if (currentUser.centro === 'Cíclica') {
-      // Cíclica users see the notas section but not users/config
-      document.getElementById('notasNavLink').style.display = 'inline-flex';
     }
+    // Cíclica oculto: se gestiona aparte en admin/ciclica.html (no se muestra el link de nav)
 
     // Nav tabs
     document.querySelectorAll('.admin-nav-link[data-view]').forEach(btn => {
