@@ -490,7 +490,8 @@
       const centro = (currentUser.role === 'admin') ? 'all' : currentUser.centro;
       const response = await apiCall('getReports', { centro });
       if (response.success) {
-        allReports = response.reports;
+        allReports = response.reports.slice().sort((a, b) =>
+          new Date(b.fecha || b.created_at || 0) - new Date(a.fecha || a.created_at || 0));
         updateReportStats();
         renderReports(allReports);
         if (currentUser.role === 'admin') loadPendingUserCount();
@@ -995,9 +996,11 @@
           <p>No hay informes destacados activos. Activalos desde la <button class="link-text" onclick="showView('informes')" style="background:none;border:none;cursor:pointer;">tabla de informes</button> usando el ⭐.</p>
         </div>`; return;
       }
+      const featured = res.reports.slice().sort((a, b) =>
+        new Date(b.fecha || b.created_at || 0) - new Date(a.fecha || a.created_at || 0));
       container.innerHTML = `<div style="overflow-x:auto;"><table class="admin-table">
         <thead><tr><th>Título</th><th>Centro</th><th>Fecha</th><th>Quitar</th></tr></thead>
-        <tbody>${res.reports.map(r => `<tr>
+        <tbody>${featured.map(r => `<tr>
           <td><strong>${esc(r.titulo)}</strong></td>
           <td><span class="badge-centro badge-${r.centro.toLowerCase()}">${esc(r.centro)}</span></td>
           <td>${formatDateShort(r.fecha)}</td>

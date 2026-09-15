@@ -89,7 +89,7 @@
       .then(function (d) { return (d.reports || []).slice().sort(byFechaDesc); });
   }
   function getReportById(id, opts) { return apiGet('getReport', { id: id }, opts).then(function (d) { return d.report || null; }); }
-  function getFeatured(opts)     { return apiGet('getFeatured', {}, opts).then(function (d) { return d.reports || []; }); }
+  function getFeatured(opts)     { return apiGet('getFeatured', {}, opts).then(function (d) { return (d.reports || []).slice().sort(byFechaDesc); }); }
   function getMiembros(c, opts)  { return apiGet('getMiembros', { centro: c || 'all' }, opts).then(function (d) { return d.miembros || []; }); }
   function getConfig(key, opts)  { return apiGet('getConfig', { key: key }, opts).then(function (d) { return d.value || ''; }); }
   function getUsers(opts)        { return apiGet('getUsers', {}, opts).then(function (d) { return d.users || []; }); }
