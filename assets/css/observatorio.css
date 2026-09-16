@@ -305,7 +305,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: var(--spacing-lg);
   padding: var(--spacing-xl);
   border-radius: var(--border-radius-lg);
@@ -313,6 +312,33 @@
   background:
     radial-gradient(120% 160% at 0% 0%, rgba(75,75,255,.22), transparent 60%),
     var(--cer-surface);
+}
+/* Debajo de este ancho, texto y botón se apilan siempre igual en
+   TODAS las tarjetas (antes usaban flex-wrap suelto y cada tarjeta
+   envolvía en un punto distinto según el largo del texto, dejando
+   un botón a la derecha y el otro suelto a la izquierda). */
+@media (max-width: 700px) {
+  .monitor-monetario-card { flex-direction: column; align-items: stretch; }
+  .monitor-monetario-card > a.btn { width: 100%; }
+}
+
+/* Variante "juego": más llamativa, en rojo */
+.monitor-monetario-card--game {
+  border-color: rgba(220,38,38,.45);
+  background:
+    radial-gradient(120% 160% at 0% 0%, rgba(220,38,38,.24), transparent 60%),
+    var(--cer-surface);
+}
+.btn-game {
+  background: linear-gradient(135deg, #ff5252, #b91c1c);
+  color: #fff;
+  box-shadow: 0 12px 40px -8px rgba(220,38,38,.65);
+  animation: btn-game-pulse 2.2s ease-in-out infinite;
+}
+.btn-game:hover { transform: translateY(-2px); box-shadow: 0 18px 50px -8px rgba(220,38,38,.9); animation-play-state: paused; }
+@keyframes btn-game-pulse {
+  0%, 100% { box-shadow: 0 12px 40px -8px rgba(220,38,38,.65); }
+  50%      { box-shadow: 0 12px 46px -4px rgba(220,38,38,.95); }
 }
 #indicadores-container .eje-card { padding: 1.75rem 1rem; }
 
