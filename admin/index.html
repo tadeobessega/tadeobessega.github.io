@@ -140,6 +140,9 @@
                   <select id="centro" class="form-select" required>
                     <option value="">Seleccioná el centro</option>
                   </select>
+                  <p class="form-hint" id="centroLockedHint" style="display:none;">
+                    <i class="fas fa-lock"></i> Tu cuenta sólo puede cargar informes para este centro.
+                  </p>
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="tag">Tipo de publicación <span class="req">*</span></label>
@@ -1186,9 +1189,17 @@
 
   function populateCentroSelects() {
     const uploadSelect = document.getElementById('centro');
+    const hint = document.getElementById('centroLockedHint');
     if (currentUser && currentUser.role !== 'admin') {
-      uploadSelect.innerHTML = `<option value="${currentUser.centro}">${currentUser.centro}</option>`;
+      if (currentUser.centro) {
+        uploadSelect.innerHTML = `<option value="${currentUser.centro}">${currentUser.centro}</option>`;
+        hint.innerHTML = `<i class="fas fa-lock"></i> Tu cuenta sólo puede cargar informes para <strong>${esc(currentUser.centro)}</strong>.`;
+      } else {
+        uploadSelect.innerHTML = `<option value="">Sin centro asignado</option>`;
+        hint.innerHTML = `<i class="fas fa-triangle-exclamation"></i> Tu cuenta no tiene un centro asignado — pedile a un administrador que te lo asigne para poder subir informes.`;
+      }
       uploadSelect.disabled = true;
+      hint.style.display = 'block';
     } else {
       uploadSelect.innerHTML = '<option value="">Selecciona el centro</option>' +
         dynamicCentros.map(id => {
@@ -1196,6 +1207,7 @@
           return `<option value="${id}">${id}${info ? ' - ' + info.name : ''}</option>`;
         }).join('');
       uploadSelect.disabled = false;
+      hint.style.display = 'none';
     }
     const editSelect = document.getElementById('editCentro');
     editSelect.innerHTML = '<option value="">Selecciona el centro</option>' +
