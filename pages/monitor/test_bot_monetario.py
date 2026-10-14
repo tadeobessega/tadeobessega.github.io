@@ -1,4 +1,6 @@
 """Tests del post-proceso del bot (no usan red). Correr con:  python -m unittest pages/monitor/test_bot_monetario.py -v"""
+import contextlib
+import io
 import json
 import os
 import sys
@@ -148,9 +150,11 @@ class Fuentes(unittest.TestCase):
                 mock.patch.object(bot, 'fetch_bandas_cambiarias', return_value=vacio), \
                 mock.patch.object(bot, 'fetch_riesgo_pais', return_value=vacio), \
                 mock.patch.object(bot, 'fetch_bcra_history', side_effect=lambda i, n, is_daily=False: pd.DataFrame(columns=['fecha', n])):
-            with self.assertRaises(SystemExit) as cm:
+            salida = io.StringIO()  # el bot imprime ::error::/::warning::; en Actions se verían como fallas reales
+            with contextlib.redirect_stdout(salida), self.assertRaises(SystemExit) as cm:
                 bot.main(['--hoy', '2026-05-15'])
             self.assertEqual(cm.exception.code, 1)
+            self.assertIn('::error::', salida.getvalue())  # igual se verifica que el aviso se emita
             self.assertFalse(os.path.exists(os.path.join(tmp, 'datos_historicos.json')))  # no pisa el JSON
 
 
