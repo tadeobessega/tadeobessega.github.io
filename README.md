@@ -13,7 +13,7 @@ usan el **Web App de Google Apps Script** del equipo — la URL está en
 ```
 index.html                 Portada
 pages/                      Una página por centro + Cíclica + ¿Quiénes somos?
-pages/monitor/             Dashboard económico del CEER (Chart.js) + bot de datos
+pages/monitor/             Dashboard económico del CEER (Chart.js) + bot de datos y tests
 admin/                      Panel de administración
 assets/css/                 styles.css (diseño CER), observatorio.css, admin.css
 assets/js/
