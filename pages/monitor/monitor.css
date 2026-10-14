@@ -14,6 +14,7 @@
     /* TONOS DERIVADOS PARA MÁS VARIABLES */
     --ceer-azul-claro: #5C5CFF;
     --ceer-morado-claro: #8A52FF;
+    --ceer-acento: #D97706; /* contraste cálido para la 2ª variable del Generador */
 
     --ceer-fondo: #FAFAFA;
     --ceer-tarjeta: #F2F2F2;
@@ -132,45 +133,53 @@ body {
     max-width: 400px;
 }
 
-/* BOTONES DE VISTA (MOBILE/PC) */
-.view-toggles {
+/* FILTROS DE FECHA */
+.time-filters {
     display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin: 0 0 1.5rem 0;
+    background: white;
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
 }
 
-.btn-toggle {
-    background: transparent;
+.range-presets,
+.date-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+}
+
+.range-presets {
+    gap: 0.5rem;
+}
+
+.chip {
+    background: white;
     border: 1.5px solid var(--ceer-principal);
     color: var(--ceer-principal);
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
     font-weight: 600;
     font-family: var(--font-texto);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     cursor: pointer;
     transition: 0.2s;
 }
 
-.btn-toggle.active {
-    background: var(--ceer-principal);
-    color: white;
+.chip:hover {
+    background: rgba(33, 33, 226, 0.08);
 }
 
-/* FILTROS DE FECHA */
-.time-filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    margin: 0 auto 2rem auto;
-    background: white;
-    padding: 1.2rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    max-width: 600px;
-    width: 100%;
+.chip.active {
+    background: var(--ceer-principal);
+    color: white;
 }
 
 .date-input-group {
@@ -458,76 +467,82 @@ body {
 }
 
 /* MODO CELULAR ESTRICTO Y DEFINITIVO */
-body.mobile-mode .header {
-    padding: 1.2rem 1rem;
-}
+/* VISTA CELULAR: ahora es responsive de verdad (antes dependía de un botón y de detectar el ancho al cargar) */
+@media (max-width: 768px) {
+    .header {
+        padding: 1.2rem 1rem;
+    }
 
-body.mobile-mode .header-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.8rem;
-}
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.8rem;
+    }
 
-body.mobile-mode .logo-ceer {
-    height: 50px;
-}
+    .logo-ceer {
+        height: 50px;
+    }
 
-body.mobile-mode .header h1 {
-    font-size: 1.8rem;
-}
+    .header h1 {
+        font-size: 1.8rem;
+    }
 
-body.mobile-mode .chart-grid {
-    grid-template-columns: 1fr;
-    gap: 1.2rem;
-}
+    .chart-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
 
-body.mobile-mode .gen-vars-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
+    .gen-vars-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 
-body.mobile-mode .time-filters {
-    flex-direction: column;
-    padding: 1.2rem;
-}
+    .chart-container {
+        height: 320px;
+    }
 
-body.mobile-mode .date-input-group {
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 0.8rem;
+        margin-bottom: 1rem;
+    }
 
-body.mobile-mode .date-input {
-    width: 60%;
-}
+    .tab-btn {
+        padding: 0.8rem 0.4rem;
+        font-size: 0.95rem;
+    }
 
-body.mobile-mode .time-filters .btn-action {
-    width: 100%;
-    margin-top: 0.5rem;
-}
+    .chart-card {
+        padding: 1.2rem;
+    }
 
-body.mobile-mode .chart-container {
-    height: 320px;
-}
+    .generator-panel {
+        padding: 1.2rem;
+    }
 
-body.mobile-mode .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-bottom: 0.8rem;
-    margin-bottom: 1rem;
-}
+    .time-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-body.mobile-mode .tab-btn {
-    padding: 0.8rem 0.4rem;
-    font-size: 0.95rem;
-}
+    .date-fields {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-body.mobile-mode .chart-card {
-    padding: 1.2rem;
-}
+    .date-input-group {
+        width: 100%;
+        justify-content: space-between;
+    }
 
-body.mobile-mode .generator-panel {
-    padding: 1.2rem;
+    .date-input {
+        width: 60%;
+    }
+
+    .date-fields .btn-action {
+        width: 100%;
+    }
 }
 
 /* FOOTER PRINCIPAL */
@@ -623,4 +638,136 @@ body.mobile-mode .generator-panel {
     text-align: center;
     font-size: 0.85rem;
     color: #6b7280;
+}
+
+/* ---------- Ítems nuevos ---------- */
+[hidden] {
+    display: none !important;
+}
+
+.chart-card.wide {
+    grid-column: 1 / -1;
+}
+
+.tab-gen {
+    color: var(--ceer-morado);
+}
+
+/* Foco visible para quien navega con teclado */
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 3px solid #069FFF;
+    outline-offset: 2px;
+}
+
+/* KPIs */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 0.9rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.kpi {
+    background: var(--ceer-tarjeta);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.kpi-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-text);
+}
+
+.kpi-valor {
+    white-space: nowrap;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--ceer-informes);
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-delta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-delta.sube::before {
+    content: '▲ ';
+}
+
+.kpi-delta.baja::before {
+    content: '▼ ';
+}
+
+.kpi-delta.igual::before {
+    content: '= ';
+}
+
+.kpi-fecha {
+    font-size: 0.74rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.actualizado {
+    font-size: 0.82rem;
+    color: #6b7280;
+    margin: 0.6rem 0 1.4rem 0;
+    text-align: right;
+}
+
+.actualizado .aviso {
+    display: block;
+    color: #B45309;
+    font-weight: 600;
+}
+
+/* Mensajes del generador (reemplazan a alert()) */
+.gen-msg {
+    background: #FEF3C7;
+    border: 1px solid #F59E0B;
+    color: #78350F;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tab-content {
+        animation: none;
+    }
+}
+
+/* KPIs en celular (va después de la regla base para poder pisarla) */
+@media (max-width: 768px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.6rem;
+    }
+
+    .kpi {
+        padding: 0.7rem 0.8rem;
+    }
+
+    .kpi-valor {
+        font-size: 1.15rem;
+    }
+
+    .kpi-delta {
+        font-size: 0.74rem;
+    }
 }

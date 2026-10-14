@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard CEER</title>
     <link rel="icon" type="image/png" href="ceer_azul_tab.png">
     <link rel="apple-touch-icon" href="ceer_azul.png">
@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <link rel="stylesheet" href="monitor.css">
@@ -39,201 +39,61 @@
                 <h1>Monitor económico</h1>
                 <p>Fuentes: BCRA, BLS, FRED y Ámbito Financiero</p>
             </div>
-            <img src="ceer blanco 1.png" alt="Logo CEER" class="logo-ceer">
+            <img src="ceer-blanco.png" alt="Logo CEER" class="logo-ceer">
         </div>
     </div>
 
     <div class="container">
-        <div class="view-toggles">
-            <button onclick="setMode('desktop')" id="btnDesktop" class="btn-toggle active"
-                aria-label="Cambiar a vista de computadora"><i class="fas fa-desktop"></i> Vista PC</button>
-            <button onclick="setMode('mobile')" id="btnMobile" class="btn-toggle"
-                aria-label="Cambiar a vista de celular"><i class="fas fa-mobile-alt"></i> Vista Celular</button>
-        </div>
+        <section id="kpis" class="kpi-grid" aria-label="Indicadores recientes"></section>
+        <p id="actualizado" class="actualizado" hidden></p>
 
-        <div class="time-filters">
-            <div class="date-input-group"><label for="dateStart">Desde:</label><input type="date" id="dateStart"
-                    class="date-input" onchange="filtrarTexto()" aria-label="Fecha de inicio"></div>
-            <div class="date-input-group"><label for="dateEnd">Hasta:</label><input type="date" id="dateEnd"
-                    class="date-input" onchange="filtrarTexto()" aria-label="Fecha de fin"></div>
-            <button class="btn-action"
-                onclick="document.getElementById('dateStart').value='';document.getElementById('dateEnd').value='';filtrarTexto()"
-                aria-label="Restablecer fechas"><i class="fas fa-undo"></i> Reset</button>
-        </div>
-
-        <div class="tabs-header" role="tablist">
-            <button class="tab-btn active" role="tab" aria-selected="true" onclick="verTab(event,'bancarias')"><i
-                    class="fas fa-university"></i> Sector Bancario</button>
-            <button class="tab-btn" role="tab" aria-selected="false" onclick="verTab(event,'macro')"><i
-                    class="fas fa-globe"></i> Macroeconomía</button>
-            <button class="tab-btn" role="tab" aria-selected="false" onclick="verTab(event,'monetarias')"><i
-                    class="fas fa-coins"></i> Política Monetaria</button>
-            <button class="tab-btn" role="tab" aria-selected="false" onclick="verTab(event,'generador')"
-                style="color:var(--ceer-morado);"><i class="fas fa-magic"></i> Generador</button>
-        </div>
-
-        <div id="bancarias" class="tab-content active">
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Préstamos Privados (ARS Reales)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartPrestamos')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartPrestamos')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartPrestamos" aria-label="Gráfico de préstamos privados"
-                            role="img"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Depósitos Privados (ARS Reales)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartDepositos')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartDepositos')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartDepositos" aria-label="Gráfico de depósitos privados"
-                            role="img"></canvas></div>
-                </div>
-                <div class="chart-card" style="grid-column:1/-1;">
-                    <div class="card-header">
-                        <h3 class="chart-title">Préstamos vs Depósitos (M. USD Nominales)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartUSD')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartUSD')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartUSD"
-                            aria-label="Gráfico de préstamos vs depósitos en USD" role="img"></canvas></div>
-                </div>
+        <div class="time-filters" role="group" aria-label="Rango de fechas">
+            <div class="range-presets" role="group" aria-label="Rangos rápidos">
+                <button type="button" class="chip" data-rango="1">1 año</button>
+                <button type="button" class="chip" data-rango="3">3 años</button>
+                <button type="button" class="chip" data-rango="5">5 años</button>
+                <button type="button" class="chip" data-rango="10">10 años</button>
+                <button type="button" class="chip active" data-rango="max">Máx.</button>
+            </div>
+            <div class="date-fields">
+                <div class="date-input-group"><label for="dateStart">Desde:</label><input type="date" id="dateStart"
+                        class="date-input"></div>
+                <div class="date-input-group"><label for="dateEnd">Hasta:</label><input type="date" id="dateEnd"
+                        class="date-input"></div>
+                <button type="button" class="btn-action" id="btnReset" aria-label="Restablecer fechas"><i
+                        class="fas fa-undo" aria-hidden="true"></i> Reset</button>
             </div>
         </div>
 
-        <div id="macro" class="tab-content">
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Riesgo País (Puntos Básicos)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartRiesgoPais')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartRiesgoPais')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartRiesgoPais"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Brecha Cambiaria: Blue, MEP y CCL (%)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartBrecha')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartBrecha')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartBrecha"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Tipo de Cambio Real (Gral. Base 100)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartITCRM')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartITCRM')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartITCRM"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Reservas vs. Compras BCRA (M. USD Reales)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartReservas')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartReservas')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartReservas"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Devaluación Mayorista vs Inflación (%)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartCarrera')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartCarrera')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartCarrera"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Expectativas: IPC Real vs Proyección REM 12m</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartIPC')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartIPC')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartIPC"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Tasa de la FED (EFFR %)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartFED')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartFED')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartFED"></canvas></div>
-                </div>
-            </div>
+        <div class="tabs-header" role="tablist" aria-label="Secciones del monitor">
+            <button type="button" class="tab-btn active" role="tab" id="tab-bancarias" data-tab="bancarias"
+                aria-selected="true" aria-controls="bancarias" tabindex="0"><i class="fas fa-university"
+                    aria-hidden="true"></i> Sector Bancario</button>
+            <button type="button" class="tab-btn" role="tab" id="tab-macro" data-tab="macro" aria-selected="false"
+                aria-controls="macro" tabindex="-1"><i class="fas fa-globe" aria-hidden="true"></i>
+                Macroeconomía</button>
+            <button type="button" class="tab-btn" role="tab" id="tab-monetarias" data-tab="monetarias"
+                aria-selected="false" aria-controls="monetarias" tabindex="-1"><i class="fas fa-coins"
+                    aria-hidden="true"></i> Política Monetaria</button>
+            <button type="button" class="tab-btn tab-gen" role="tab" id="tab-generador" data-tab="generador"
+                aria-selected="false" aria-controls="generador" tabindex="-1"><i class="fas fa-magic"
+                    aria-hidden="true"></i> Generador</button>
         </div>
 
-        <div id="monetarias" class="tab-content">
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Base Monetaria vs M2 (ARS Reales)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartAgregados')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartAgregados')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartAgregados"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <div class="card-header">
-                        <h3 class="chart-title">Mapa de Tasas TEA vs IPC Mensual</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartTasas')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartTasas')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartTasas"></canvas></div>
-                </div>
-                <div class="chart-card" style="grid-column:1/-1;">
-                    <div class="card-header">
-                        <h3 class="chart-title">Seguimiento Diario Tasas (Último Año Hábil)</h3>
-                        <div class="card-tools"><button onclick="dlPNG('chartDiario')"
-                                aria-label="Descargar gráfico en formato PNG" title="Descargar PNG"><i
-                                    class="fas fa-camera"></i></button><button onclick="dlCSV('chartDiario')"
-                                aria-label="Descargar datos en formato CSV" title="Descargar CSV"><i
-                                    class="fas fa-file-csv"></i></button></div>
-                    </div>
-                    <div class="chart-container"><canvas id="chartDiario"></canvas></div>
-                </div>
-            </div>
+        <!-- Las tarjetas de gráficos se generan desde CARDS en monitor.js -->
+        <div id="bancarias" class="tab-content active" role="tabpanel" aria-labelledby="tab-bancarias">
+            <div class="chart-grid" data-grid="bancarias"></div>
         </div>
 
-        <div id="generador" class="tab-content">
+        <div id="macro" class="tab-content" role="tabpanel" aria-labelledby="tab-macro">
+            <div class="chart-grid" data-grid="macro"></div>
+        </div>
+
+        <div id="monetarias" class="tab-content" role="tabpanel" aria-labelledby="tab-monetarias">
+            <div class="chart-grid" data-grid="monetarias"></div>
+        </div>
+
+        <div id="generador" class="tab-content" role="tabpanel" aria-labelledby="tab-generador">
             <div class="generator-panel">
                 <div class="gen-header">
                     <div><span style="color:var(--gray-text);">Variables: </span><label><input type="radio"
@@ -288,6 +148,7 @@
                 </div>
                 <button class="btn-action-gen" onclick="crearGen()" aria-label="Dibujar Análisis"><i
                         class="fas fa-chart-pie"></i> Dibujar Análisis</button>
+                <div id="genMsg" class="gen-msg" role="alert" hidden></div>
             </div>
             <div class="chart-card" id="resultadoGenerador" style="display:none;">
                 <div class="card-header">
